@@ -10,23 +10,25 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
+# Django settings
+# https://docs.djangoproject.com/en/5.0/ref/settings/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-9iea-5+mfz2&xofs$$1kqxb79uj)gj9^el1bk4lgiq%_6$itwg"
+SECRET_KEY = os.environ.get("NEWSHUB_SECRET_KEY", "django-insecure-9iea-5+mfz2&xofs$$1kqxb79uj)gj9^el1bk4lgiq%_6$itwg")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get("NEWSHUB_DEBUG").lower() == "true"
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.environ.get("NEWSHUB_ALLOWED_HOSTS", "127.0.0.1,.localhost,[::1]").split(",")
 
+INTERNAL_IPS = os.environ.get("NEWSHUB_INTERNAL_IPS", "127.0.0.1,.localhost,[::1]").split(",")
 
 # Application definition
 
@@ -37,11 +39,16 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "corsheaders",
+    "rest_framework",
+    "rest_framework_simplejwt",
+    "django_filters",
     "api.apps.ApiConfig"
 ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -55,8 +62,7 @@ ROOT_URLCONF = "newshub.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / 'templates']
-        ,
+        "DIRS": [BASE_DIR / 'templates'],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -119,7 +125,43 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 
+STATIC_ROOT = BASE_DIR / "staticfiles"
+
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
+
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# CORS
+# https://github.com/adamchainz/django-cors-headers?tab=readme-ov-file#configuration
+
+CORS_ALLOWED_ORIGINS = [
+    "http://127.0.0.1:8000"
+]
+
+
+# Django REST Framework settings
+# https://www.django-rest-framework.org/api-guide/settings/
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+        "rest_framework.authentication.SessionAuthentication",
+    ],
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
+    "PAGE_SIZE": 10,
+    "URL_FIELD_NAME": "resource_url"
+}
+
+
+# Django debugging settings
+
+if DEBUG:
+    INSTALLED_APPS += ("debug_toolbar",)
+    MIDDLEWARE = ["debug_toolbar.middleware.DebugToolbarMiddleware"] + MIDDLEWARE
+    CORS_ALLOW_ALL_ORIGINS = True
