@@ -1,9 +1,13 @@
-<html lang="en">
-<head>
-    <title>{% block title %}NewsHub - Collaborative news sharing{% endblock %}</title>
-</head>
-<body>
-{% block body %}{% endblock %}
-{% block scripts %}{% endblock %}
-</body>
-</html>
+{% extends "django_bootstrap5/bootstrap5.html" %}
+{% load static %}
+{% load django_bootstrap5 %}
+
+{% block bootstrap5_title %}{% block title %}NewsHub - Collaborative news sharing{% endblock %}{% endblock %}
+
+{% block bootstrap5_content %}
+<div class="container">
+    {% include "menu.html" %}
+    {% bootstrap_messages %}
+    {% block content %}It Works!{% endblock %}
+</div>
+{% endblock %}
