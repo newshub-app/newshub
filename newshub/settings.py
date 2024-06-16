@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get("NEWSHUB_SECRET_KEY", "django-insecure-9iea-5+mfz2&xofs$$1kqxb79uj)gj9^el1bk4lgiq%_6$itwg")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get("NEWSHUB_DEBUG").lower() == "true"
+DEBUG = os.environ.get("NEWSHUB_DEBUG", "false").lower() == "true"
 
 ALLOWED_HOSTS = os.environ.get("NEWSHUB_ALLOWED_HOSTS", "127.0.0.1,.localhost,[::1]").split(",")
 
@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "rest_framework_simplejwt",
     "django_filters",
+    "news.apps.NewsConfig",
     "api.apps.ApiConfig"
 ]
 
