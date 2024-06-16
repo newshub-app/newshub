@@ -1,5 +1,7 @@
 from django.db import models
 
+__all__ = ["Category", "Link"]
+
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
