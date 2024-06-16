@@ -1,0 +1,61 @@
+{% load django_bootstrap5 %}
+
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+        <a href="{% url 'index' %}" class="navbar-brand">NewsHub</a>
+        <button class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbar-content"
+                aria-controls="navbar-content"
+                aria-expanded="false"
+                aria-label="Toggle menu"
+        ><span class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse" id="navbar-content">
+            <ul class="navbar-nav me-auto">
+
+                <li class="nav-item">
+                    <a href="{% url 'index' %}"
+                       class="nav-link{% if request.resolver_match.view_name == 'index' %} active{% endif %}"
+                       {% if request.resolver_match.view_name == 'index' %}aria-current="page" {% endif %}
+                    >Home</a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{% url 'links' %}"
+                       class="nav-link{% if request.resolver_match.view_name == 'links' %} active{% endif %}"
+                       {% if request.resolver_match.view_name == 'links' %}aria-current="page" {% endif %}
+                    >Links</a>
+                </li>
+
+            </ul>
+        </div>
+            <button class="btn btn-outline-primary justify-content-end"
+                    type="button"
+                    data-bs-toggle="modal"
+                    data-bs-target="#new-link-modal"
+            >Add Link</button>
+    </div>
+</nav>
+&nbsp;
+<div class="modal fade" id="new-link-modal" tabindex="-1" aria-labelledby="new-link-modal-title">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="new-link-modal-title">Add Link</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{% url 'link_create' %}" method="post">
+                    {% csrf_token %}
+                    {% bootstrap_form new_link_form %}
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+            
+        </div>
+    </div>
+</div>
