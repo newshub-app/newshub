@@ -4,7 +4,7 @@ __all__ = ["Category", "Link"]
 
 
 class Category(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
 
     def __str__(self):
         return self.name
@@ -14,7 +14,7 @@ class Category(models.Model):
 
 
 class Link(models.Model):
-    url = models.URLField()
+    url = models.URLField(unique=True)
     title = models.CharField(max_length=100)
     description = models.TextField()
     category = models.ForeignKey(Category, on_delete=models.DO_NOTHING)
