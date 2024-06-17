@@ -11,7 +11,6 @@ class IndexView(TemplateView):
 
 class LinkListView(ListView):
     model = Link
-    template_name = "news/links.html"
     context_object_name = "links"
     ordering = ["-created"]
     paginate_by = 10
@@ -19,7 +18,6 @@ class LinkListView(ListView):
 
 class LinkDetailView(DetailView):
     model = Link
-    template_name = "news/link-details.html"
     context_object_name = "link"
 
 
@@ -32,4 +30,4 @@ class LinkCreateView(CreateView):
         return HttpResponseNotAllowed(["POST"])
 
     def get_success_url(self):
-        return urls.reverse("link_details", kwargs={"pk": self.object.pk})
+        return urls.reverse("link_detail", kwargs={"pk": self.object.pk})

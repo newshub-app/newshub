@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="dropdown justify-content-end">
+        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+            Filter
+        </button>
+        <ul class="dropdown-menu">
+            <li><a href="#" class="dropdown-item">Unpublished only</a></li>
+            <li><a href="#" class="dropdown-item">My links</a></li>
+            <li><a href="#" class="dropdown-item">Past 7d</a></li>
+            <li><a href="#" class="dropdown-item">Past 7d</a></li>
+        </ul>
+    </div>
+    {% for link in links %}
+        <div class="card">
+            <div class="card-header">
+                <a class="link-dark link-underline-opacity-0 link-underline-opacity-100-hover"
+                   href="{{ link.url }}">{{ link.title }} <i class="bi bi-box-arrow-up-right"></i></a>
+            </div>
+            <div class="card-body">
+                {{ link.description }}
+            </div>
+            <div class="card-footer">
+                <span class="badge rounded-pill text-bg-secondary">{{ link.category }}</span>
+            </div>
+        </div>
+        &nbsp;
+    {% endfor %}
+
+    {% include "pagination.html" %}
+
+{% endblock %}

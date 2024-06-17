@@ -18,7 +18,7 @@ class LinksTestCase(TestCase):
     def test_link_create(self):
         response = self.client.post("/links/new/", data=EXAMPLE_LINK, follow=True)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.template_name, ["news/link-details.html"])
+        self.assertEqual(response.template_name, ["news/link_detail.html"])
 
     def test_links(self):
         response = self.client.get("/links/")
