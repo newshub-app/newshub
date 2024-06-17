@@ -11,12 +11,13 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 import os
+import sys
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
+#
 # Django settings
 # https://docs.djangoproject.com/en/5.0/ref/settings/
 
@@ -25,6 +26,7 @@ SECRET_KEY = os.environ.get("NEWSHUB_SECRET_KEY", "django-insecure-9iea-5+mfz2&x
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get("NEWSHUB_DEBUG", "false").lower() == "true"
+TESTING = 'test' in sys.argv
 
 ALLOWED_HOSTS = os.environ.get("NEWSHUB_ALLOWED_HOSTS", "127.0.0.1,.localhost,[::1]").split(",")
 
@@ -80,7 +82,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "newshub.wsgi.application"
 
-
+#
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
@@ -91,7 +93,7 @@ DATABASES = {
     }
 }
 
-
+#
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 
@@ -110,7 +112,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
+#
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
@@ -122,7 +124,7 @@ USE_I18N = True
 
 USE_TZ = True
 
-
+#
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
@@ -134,12 +136,13 @@ STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
 
-
+#
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+#
 # CORS
 # https://github.com/adamchainz/django-cors-headers?tab=readme-ov-file#configuration
 
@@ -147,8 +150,8 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:8000"
 ]
 
-
-# Django REST Framework settings
+#
+# Django REST Framework
 # https://www.django-rest-framework.org/api-guide/settings/
 
 REST_FRAMEWORK = {
@@ -161,10 +164,45 @@ REST_FRAMEWORK = {
     "URL_FIELD_NAME": "resource_url"
 }
 
+#
+# Django debug toolbar
+# https://django-debug-toolbar.readthedocs.io/en/latest/configuration.html
 
+DEBUG_TOOLBAR_PANELS = [
+    'debug_toolbar.panels.history.HistoryPanel',
+    'debug_toolbar.panels.versions.VersionsPanel',
+    'debug_toolbar.panels.timer.TimerPanel',
+    'debug_toolbar.panels.settings.SettingsPanel',
+    'debug_toolbar.panels.headers.HeadersPanel',
+    'debug_toolbar.panels.request.RequestPanel',
+    'debug_toolbar.panels.templates.TemplatesPanel',
+    'debug_toolbar.panels.sql.SQLPanel',
+    'debug_toolbar.panels.cache.CachePanel',
+    'debug_toolbar.panels.signals.SignalsPanel',
+    'debug_toolbar.panels.staticfiles.StaticFilesPanel',
+    'mail_panel.panels.MailToolbarPanel',
+    'debug_toolbar.panels.profiling.ProfilingPanel',
+    'debug_toolbar.panels.redirects.RedirectsPanel',
+]
+
+DEBUG_TOOLBAR_CONFIG = {
+    "SHOW_COLLAPSED": True,
+    "DISABLE_PANELS": [
+        'debug_toolbar.panels.profiling.ProfilingPanel',
+        'debug_toolbar.panels.redirects.RedirectsPanel',
+    ]
+}
+
+DEBUG_TOOLBAR_APPS = [
+    "debug_toolbar",
+    "mail_panel",
+]
+
+#
 # Django debugging settings
 
-if DEBUG:
-    INSTALLED_APPS += ("debug_toolbar",)
+if DEBUG and not TESTING:
+    INSTALLED_APPS += DEBUG_TOOLBAR_APPS
     MIDDLEWARE = ["debug_toolbar.middleware.DebugToolbarMiddleware"] + MIDDLEWARE
+    EMAIL_BACKEND = 'mail_panel.backend.MailToolbarBackend'
     CORS_ALLOW_ALL_ORIGINS = True

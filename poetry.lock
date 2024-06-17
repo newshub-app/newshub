@@ -93,6 +93,20 @@ files = [
 Django = ">=4.2"
 
 [[package]]
+name = "django-mail-panel"
+version = "4.0.4"
+description = "A panel for django-debug-toolbar that allows for viewing of recently sent email."
+optional = false
+python-versions = "<4.0,>=3.5"
+files = [
+    {file = "django_mail_panel-4.0.4-py3-none-any.whl", hash = "sha256:440fe6c60bedc9bc4c4a2d9931ac9582d81f5d4c7e976eca7a48e8fc2d758a12"},
+    {file = "django_mail_panel-4.0.4.tar.gz", hash = "sha256:032c75a9588efe051a758404f2a68cf29b620e024d44cf40acd4a9b6639206fc"},
+]
+
+[package.dependencies]
+django-debug-toolbar = ">=1.0"
+
+[[package]]
 name = "djangorestframework"
 version = "3.15.1"
 description = "Web APIs for Django, made easy."
@@ -176,4 +190,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "443c26f06f280808df74c56e113ac7e66c1e4116e4edeb1342c1878b26a94d6e"
+content-hash = "d437c9ffcd191ee21c359c0ed1f59a135221332dbab0d3cceb9f700d1e9122cb"
