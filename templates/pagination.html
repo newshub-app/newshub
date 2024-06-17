@@ -1,20 +1,24 @@
-<nav>
-    <ul class="pagination justify-content-center">
-        {# previous page #}
-        <li class="page-item">
-            <a href="{% url request.resolver_match.view_name %}?page={% if page_obj.has_previous %}{{ page_obj.previous_page_number }}{% endif %}"
-               class="page-link{% if not page_obj.has_previous %} disabled{% endif %}">Prev.</a>
-        </li>
+{% if is_paginated %}
+    <nav>
+        <ul class="pagination justify-content-center">
+            {# previous page #}
+            <li class="page-item">
+                <a href="{% url request.resolver_match.view_name %}?page=
+                        {% if page_obj.has_previous %}{{ page_obj.previous_page_number }}{% endif %}"
+                   class="page-link{% if not page_obj.has_previous %} disabled{% endif %}">Prev.</a>
+            </li>
 
-        {# current page #}
-        <li class="page-item">
-            <a href="#" class="page-link disabled">{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</a>
-        </li>
+            {# current page #}
+            <li class="page-item">
+                <a href="#" class="page-link disabled">{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</a>
+            </li>
 
-        {# next page #}
-        <li class="page-item">
-            <a href="{% url request.resolver_match.view_name %}?page={% if page_obj.has_next %}{{ page_obj.next_page_number }}{% endif %}"
-               class="page-link{% if not page_obj.has_next %} disabled{% endif %}">Next</a>
-        </li>
-    </ul>
-</nav>
+            {# next page #}
+            <li class="page-item">
+                <a href="{% url request.resolver_match.view_name %}?page=
+                        {% if page_obj.has_next %}{{ page_obj.next_page_number }}{% endif %}"
+                   class="page-link{% if not page_obj.has_next %} disabled{% endif %}">Next</a>
+            </li>
+        </ul>
+    </nav>
+{% endif %}
