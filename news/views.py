@@ -1,3 +1,4 @@
+from django.http import HttpResponseNotAllowed
 from django.views.generic import ListView, DetailView, TemplateView, CreateView
 from django import urls
 
@@ -8,7 +9,7 @@ class IndexView(TemplateView):
     template_name = "news/index.html"
 
 
-class LinksListView(ListView):
+class LinkListView(ListView):
     model = Link
     template_name = "news/links.html"
     context_object_name = "links"
@@ -26,3 +27,9 @@ class LinkCreateView(CreateView):
     model = Link
     fields = ["url", "title", "description", "category"]
     success_url = urls.reverse_lazy("links")
+
+    def get(self, request, *args, **kwargs):
+        return HttpResponseNotAllowed(["POST"])
+
+    def get_success_url(self):
+        return urls.reverse("link_details", kwargs={"pk": self.object.pk})
