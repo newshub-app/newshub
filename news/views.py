@@ -1,6 +1,6 @@
+from django import urls
 from django.http import HttpResponseNotAllowed
 from django.views.generic import ListView, TemplateView, CreateView, UpdateView
-from django import urls
 
 from .models import *
 
