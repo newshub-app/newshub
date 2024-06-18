@@ -1,22 +1,23 @@
 from django import urls
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseNotAllowed
 from django.views.generic import ListView, TemplateView, CreateView, UpdateView, FormView
 
 from .models import *
 
 
-class IndexView(TemplateView):
+class IndexView(LoginRequiredMixin, TemplateView):
     template_name = "index.html"
 
 
-class LinkListView(ListView):
+class LinkListView(LoginRequiredMixin, ListView):
     model = Link
     context_object_name = "links"
     ordering = ["-created"]
     paginate_by = 10
 
 
-class LinkCreateView(CreateView):
+class LinkCreateView(LoginRequiredMixin, CreateView):
     model = Link
     fields = ["url", "title", "description", "category"]
     success_url = urls.reverse_lazy("links")
@@ -25,7 +26,7 @@ class LinkCreateView(CreateView):
         return HttpResponseNotAllowed(["POST"])
 
 
-class LinkUpdateView(UpdateView):
+class LinkUpdateView(LoginRequiredMixin, UpdateView):
     model = Link
     fields = ["url", "title", "description", "category"]
     success_url = urls.reverse_lazy("links")
