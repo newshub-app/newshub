@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     "django_filters",
     "django_bootstrap5",
     "news.apps.NewsConfig",
-    "api.apps.ApiConfig"
+    "api.apps.ApiConfig",
 ]
 
 MIDDLEWARE = [
@@ -111,6 +111,12 @@ AUTH_PASSWORD_VALIDATORS = [
         "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
+
+#
+# Authentication
+# https://docs.djangoproject.com/en/5.0/topics/auth/default/
+
+AUTH_USER_MODEL = "news.User"
 
 #
 # Internationalization
