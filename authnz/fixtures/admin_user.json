@@ -1,0 +1,20 @@
+[
+{
+  "model": "authnz.user",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$720000$fUODJMuEE4ATGipAQNhzr9$5r3WyaSSCMGmt6yLiA6KTn5DB8uBNzDujLDEB2eQnuk=",
+    "last_login": null,
+    "is_superuser": true,
+    "username": "admin",
+    "first_name": "",
+    "last_name": "",
+    "email": "admin@example.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2024-06-18T20:21:57.391Z",
+    "groups": [],
+    "user_permissions": []
+  }
+}
+]
