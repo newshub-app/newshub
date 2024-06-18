@@ -1,7 +1,8 @@
 PYTHON := poetry run python
 MANAGE_PY := $(PYTHON) manage.py
-APPS := api news
-FIXTURES := categories
+APPS := authnz news api
+FIXTURES := admin_user categories
+SAMPLE_FIXTURES := sample_links
 
 run: ## Run django development server
 	@$(MANAGE_PY) runserver
@@ -15,11 +16,11 @@ migrate: migrations ## Apply database migrations
 	@$(MANAGE_PY) migrate
 .PHONY: migrate
 
-fixtures: ## Generate database fixtures
-	@$(MANAGE_PY) dumpdata --indent 2 news.Category > news/fixtures/categories.json
-
 loaddata: ## Load database fixtures
 	@$(MANAGE_PY) loaddata $(FIXTURES)
+
+loadsamples: loaddata ## Load sample data
+	@$(MANAGE_PY) loaddata $(SAMPLE_FIXTURES)
 
 static: ## Collect static files
 	@$(MANAGE_PY) collectstatic --noinput
