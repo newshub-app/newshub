@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
     "django_filters",
     "django_bootstrap5",
+    "authnz.apps.AuthnzConfig",
     "news.apps.NewsConfig",
     "api.apps.ApiConfig",
 ]
@@ -103,6 +104,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
     {
         "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
+        "OPTIONS": {
+            "min_length": 12,
+        }
     },
     {
         "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
@@ -116,7 +120,13 @@ AUTH_PASSWORD_VALIDATORS = [
 # Authentication
 # https://docs.djangoproject.com/en/5.0/topics/auth/default/
 
-AUTH_USER_MODEL = "news.User"
+AUTH_USER_MODEL = "authnz.User"
+
+LOGIN_REDIRECT_URL = "index"
+
+LOGOUT_REDIRECT_URL = "index"
+
+PASSWORD_RESET_TIMEOUT = 3600  # password reset links expire after 1 hour
 
 #
 # Internationalization

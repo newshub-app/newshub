@@ -1,16 +1,7 @@
 from django.contrib.auth.models import AbstractUser, Group as BaseGroup
 from django.db import models
 
-__all__ = ["User", "Group", "Category", "Link"]
-
-
-class User(AbstractUser):
-    pass
-
-
-class Group(BaseGroup):
-    class Meta:
-        proxy = True
+__all__ = ["Category", "Link"]
 
 
 class Category(models.Model):

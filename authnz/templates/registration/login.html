@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% load django_bootstrap5 %}
+
+{% block title %}NewsHub - Login{% endblock %}
+
+{% block content %}
+    {% include "form.html" %}
+
+    <small><a href="{% url "register" %}">Register new user</a></small>
+{% endblock %}
