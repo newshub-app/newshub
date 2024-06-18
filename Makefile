@@ -1,6 +1,7 @@
 PYTHON := poetry run python
 MANAGE_PY := $(PYTHON) manage.py
 APPS := api news
+FIXTURES := categories
 
 run: ## Run django development server
 	@$(MANAGE_PY) runserver
@@ -18,7 +19,7 @@ fixtures: ## Generate database fixtures
 	@$(MANAGE_PY) dumpdata --indent 2 news.Category > news/fixtures/categories.json
 
 loaddata: ## Load database fixtures
-	@$(MANAGE_PY) loaddata
+	@$(MANAGE_PY) loaddata $(FIXTURES)
 
 static: ## Collect static files
 	@$(MANAGE_PY) collectstatic --noinput
