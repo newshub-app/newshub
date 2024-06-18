@@ -14,7 +14,10 @@ UPDATED_TITLE = "Modified"
 
 
 class LinksTestCase(TestCase):
-    fixtures = ["categories.json"]
+    fixtures = ["categories.json", "admin_user.json"]
+
+    def setUp(self):
+        self.client.login(username="admin", password="admin")
 
     def test_index(self):
         response = self.client.get("/")
