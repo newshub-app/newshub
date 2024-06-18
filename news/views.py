@@ -27,4 +27,5 @@ class LinkCreateView(CreateView):
 
 class LinkUpdateView(UpdateView):
     model = Link
+    fields = ["url", "title", "description", "category"]
     success_url = urls.reverse_lazy("links")
