@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 {% load django_bootstrap5 %}
 
+{% block title %}NewsHub - Edit link{% endblock %}
+
 {% block content %}
     <form method="post" target="{% url "link_update" pk=link.id %}">
         {% csrf_token %}
