@@ -22,15 +22,22 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # https://docs.djangoproject.com/en/5.0/ref/settings/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get("NEWSHUB_SECRET_KEY", "django-insecure-9iea-5+mfz2&xofs$$1kqxb79uj)gj9^el1bk4lgiq%_6$itwg")
+SECRET_KEY = os.environ.get(
+    "NEWSHUB_SECRET_KEY",
+    "django-insecure-9iea-5+mfz2&xofs$$1kqxb79uj)gj9^el1bk4lgiq%_6$itwg",
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get("NEWSHUB_DEBUG", "false").lower() == "true"
-TESTING = 'test' in sys.argv
+TESTING = "test" in sys.argv
 
-ALLOWED_HOSTS = os.environ.get("NEWSHUB_ALLOWED_HOSTS", "127.0.0.1,.localhost,[::1]").split(",")
+ALLOWED_HOSTS = os.environ.get(
+    "NEWSHUB_ALLOWED_HOSTS", "127.0.0.1,.localhost,[::1]"
+).split(",")
 
-INTERNAL_IPS = os.environ.get("NEWSHUB_INTERNAL_IPS", "127.0.0.1,.localhost,[::1]").split(",")
+INTERNAL_IPS = os.environ.get(
+    "NEWSHUB_INTERNAL_IPS", "127.0.0.1,.localhost,[::1]"
+).split(",")
 
 # Application definition
 
@@ -67,7 +74,7 @@ ROOT_URLCONF = "newshub.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / 'templates'],
+        "DIRS": [BASE_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -106,7 +113,7 @@ AUTH_PASSWORD_VALIDATORS = [
         "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
         "OPTIONS": {
             "min_length": 12,
-        }
+        },
     },
     {
         "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
@@ -164,9 +171,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # CORS
 # https://github.com/adamchainz/django-cors-headers?tab=readme-ov-file#configuration
 
-CORS_ALLOWED_ORIGINS = [
-    "http://127.0.0.1:8000"
-]
+CORS_ALLOWED_ORIGINS = ["http://127.0.0.1:8000"]
 
 #
 # Django REST Framework
@@ -179,7 +184,7 @@ REST_FRAMEWORK = {
     ],
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
     "PAGE_SIZE": 10,
-    "URL_FIELD_NAME": "resource_url"
+    "URL_FIELD_NAME": "resource_url",
 }
 
 #
@@ -187,28 +192,28 @@ REST_FRAMEWORK = {
 # https://django-debug-toolbar.readthedocs.io/en/latest/configuration.html
 
 DEBUG_TOOLBAR_PANELS = [
-    'debug_toolbar.panels.history.HistoryPanel',
-    'debug_toolbar.panels.versions.VersionsPanel',
-    'debug_toolbar.panels.timer.TimerPanel',
-    'debug_toolbar.panels.settings.SettingsPanel',
-    'debug_toolbar.panels.headers.HeadersPanel',
-    'debug_toolbar.panels.request.RequestPanel',
-    'debug_toolbar.panels.templates.TemplatesPanel',
-    'debug_toolbar.panels.sql.SQLPanel',
-    'debug_toolbar.panels.cache.CachePanel',
-    'debug_toolbar.panels.signals.SignalsPanel',
-    'debug_toolbar.panels.staticfiles.StaticFilesPanel',
-    'mail_panel.panels.MailToolbarPanel',
-    'debug_toolbar.panels.profiling.ProfilingPanel',
-    'debug_toolbar.panels.redirects.RedirectsPanel',
+    "debug_toolbar.panels.history.HistoryPanel",
+    "debug_toolbar.panels.versions.VersionsPanel",
+    "debug_toolbar.panels.timer.TimerPanel",
+    "debug_toolbar.panels.settings.SettingsPanel",
+    "debug_toolbar.panels.headers.HeadersPanel",
+    "debug_toolbar.panels.request.RequestPanel",
+    "debug_toolbar.panels.templates.TemplatesPanel",
+    "debug_toolbar.panels.sql.SQLPanel",
+    "debug_toolbar.panels.cache.CachePanel",
+    "debug_toolbar.panels.signals.SignalsPanel",
+    "debug_toolbar.panels.staticfiles.StaticFilesPanel",
+    "mail_panel.panels.MailToolbarPanel",
+    "debug_toolbar.panels.profiling.ProfilingPanel",
+    "debug_toolbar.panels.redirects.RedirectsPanel",
 ]
 
 DEBUG_TOOLBAR_CONFIG = {
     "SHOW_COLLAPSED": True,
     "DISABLE_PANELS": [
-        'debug_toolbar.panels.profiling.ProfilingPanel',
-        'debug_toolbar.panels.redirects.RedirectsPanel',
-    ]
+        "debug_toolbar.panels.profiling.ProfilingPanel",
+        "debug_toolbar.panels.redirects.RedirectsPanel",
+    ],
 }
 
 DEBUG_TOOLBAR_APPS = [
@@ -222,5 +227,5 @@ DEBUG_TOOLBAR_APPS = [
 if DEBUG and not TESTING:
     INSTALLED_APPS += DEBUG_TOOLBAR_APPS
     MIDDLEWARE = ["debug_toolbar.middleware.DebugToolbarMiddleware"] + MIDDLEWARE
-    EMAIL_BACKEND = 'mail_panel.backend.MailToolbarBackend'
+    EMAIL_BACKEND = "mail_panel.backend.MailToolbarBackend"
     CORS_ALLOW_ALL_ORIGINS = True

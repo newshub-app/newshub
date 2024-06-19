@@ -1,14 +1,8 @@
-from rest_framework.serializers import (
-    HyperlinkedModelSerializer,
-    ModelSerializer
-)
+from rest_framework.serializers import HyperlinkedModelSerializer, ModelSerializer
 
 from news.models import *
 
-__all__ = [
-    "CategorySerializer",
-    "LinkSerializer"
-]
+__all__ = ["CategorySerializer", "LinkSerializer"]
 
 
 class CategorySerializer(ModelSerializer):

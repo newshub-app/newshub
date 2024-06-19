@@ -6,6 +6,6 @@ EXAMPLE_LINK = {
     "url": "https://example.com",
     "title": EXAMPLE_LINK_TITLE,
     "description": "Example description",
-    "category": 1
+    "category": 1,
 }
 UPDATED_TITLE = "Modified"

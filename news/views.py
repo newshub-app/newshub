@@ -1,7 +1,7 @@
 from django import urls
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseNotAllowed
-from django.views.generic import ListView, TemplateView, CreateView, UpdateView, FormView
+from django.views.generic import ListView, TemplateView, CreateView, UpdateView
 
 from .models import *
 
