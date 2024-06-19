@@ -10,7 +10,7 @@ EXAMPLE_USER = {
 }
 
 
-class AuthenticationTestCase(TestCase):
+class UserFlows(TestCase):
     def test_login(self):
         response = self.client.get(reverse("login"))
         self.assertContains(response, "Login", status_code=200)
