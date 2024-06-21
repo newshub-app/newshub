@@ -7,6 +7,7 @@ router = DefaultRouter()
 router.register("category", views.CategoryViewSet)
 router.register("link", views.LinkViewSet)
 
+app_name = "api"
 urlpatterns = [
     path("", include(router.urls), name="api"),
 ]

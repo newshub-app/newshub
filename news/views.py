@@ -12,7 +12,7 @@ class IndexView(LoginRequiredMixin, TemplateView):
 
 class LinkListView(LoginRequiredMixin, ListView):
     model = Link
-    context_object_name = "links"
+    context_object_name = "news:links"
     ordering = ["-created"]
     paginate_by = 10
 
@@ -20,7 +20,7 @@ class LinkListView(LoginRequiredMixin, ListView):
 class LinkCreateView(LoginRequiredMixin, CreateView):
     model = Link
     fields = ["url", "title", "description", "category"]
-    success_url = urls.reverse_lazy("links")
+    success_url = urls.reverse_lazy("news:links")
 
     def get(self, request, *args, **kwargs):
         return HttpResponseNotAllowed(["POST"])
@@ -29,4 +29,4 @@ class LinkCreateView(LoginRequiredMixin, CreateView):
 class LinkUpdateView(LoginRequiredMixin, UpdateView):
     model = Link
     fields = ["url", "title", "description", "category"]
-    success_url = urls.reverse_lazy("links")
+    success_url = urls.reverse_lazy("news:links")

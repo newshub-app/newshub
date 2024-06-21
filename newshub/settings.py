@@ -129,11 +129,11 @@ AUTH_PASSWORD_VALIDATORS = [
 
 AUTH_USER_MODEL = "authnz.User"
 
-LOGIN_URL = "login"
+LOGIN_URL = "authnz:login"
 
-LOGIN_REDIRECT_URL = "index"
+LOGIN_REDIRECT_URL = "news:index"
 
-LOGOUT_REDIRECT_URL = "index"
+LOGOUT_REDIRECT_URL = "news:index"
 
 PASSWORD_RESET_TIMEOUT = 3600  # password reset links expire after 1 hour
 
