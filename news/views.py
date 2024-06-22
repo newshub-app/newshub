@@ -1,8 +1,10 @@
 from django import urls
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseNotAllowed
-from django.views.generic import ListView, TemplateView, CreateView, UpdateView
+from django.views.generic import TemplateView, CreateView, UpdateView
+from django_filters.views import FilterView
 
+from .filters import LinkFilter
 from .models import *
 
 
@@ -10,11 +12,13 @@ class IndexView(LoginRequiredMixin, TemplateView):
     template_name = "index.html"
 
 
-class LinkListView(LoginRequiredMixin, ListView):
+class LinkListView(LoginRequiredMixin, FilterView):
     model = Link
-    context_object_name = "news:links"
+    context_object_name = "links"
+    template_name_suffix = "_list"
     ordering = ["-created"]
-    paginate_by = 10
+    paginate_by = 5
+    filterset_class = LinkFilter
 
 
 class LinkCreateView(LoginRequiredMixin, CreateView):

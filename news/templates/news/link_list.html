@@ -1,19 +1,15 @@
 {% extends "base.html" %}
+{% load django_bootstrap5 %}
 
 {% block title %}NewsHub - Links{% endblock %}
 
 {% block content %}
-    <div class="dropdown justify-content-end">
-        {#        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">#}
-        {#            Filter#}
-        {#        </button>#}
-        {#        <ul class="dropdown-menu">#}
-        {#            <li><a href="#" class="dropdown-item">Unpublished only</a></li>#}
-        {#            <li><a href="#" class="dropdown-item">My links</a></li>#}
-        {#            <li><a href="#" class="dropdown-item">Past 7d</a></li>#}
-        {#            <li><a href="#" class="dropdown-item">Past 7d</a></li>#}
-        {#        </ul>#}
-    </div>
+    {# FIXME: find a way to make this pretty (without label but with placeholder value + aligned button) #}
+    <form class="row row-cols-lg-auto g-3 align-items-center" method="get">
+        {% csrf_token %}
+        {% bootstrap_form filter.form %}
+        {% bootstrap_button button_type="submit" content="Search" %}
+    </form>
 
     {% for link in object_list %}
         <div class="card">
