@@ -6,7 +6,9 @@ from .models import *
 
 class LinkFilter(FilterSet):
     search = CharFilter(method="search_filter", label="Content")
-    category = ModelChoiceFilter(queryset=lambda request: Category.objects.all(), label="Category")
+    category = ModelChoiceFilter(
+        queryset=lambda request: Category.objects.all(), label="Category"
+    )
 
     class Meta:
         model = Link
@@ -15,7 +17,7 @@ class LinkFilter(FilterSet):
     @staticmethod
     def search_filter(queryset, _, value):
         return queryset.filter(
-            Q(title__icontains=value) |
-            Q(description__icontains=value) |
-            Q(url__icontains=value)
+            Q(title__icontains=value)
+            | Q(description__icontains=value)
+            | Q(url__icontains=value)
         )
