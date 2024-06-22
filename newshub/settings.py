@@ -55,7 +55,7 @@ INSTALLED_APPS = [
     "django_bootstrap5",
     "authnz.apps.AuthnzConfig",
     "news.apps.NewsConfig",
-    "api.apps.ApiConfig",
+    # "api.apps.ApiConfig",
 ]
 
 MIDDLEWARE = [
