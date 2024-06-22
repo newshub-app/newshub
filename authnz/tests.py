@@ -12,13 +12,13 @@ EXAMPLE_USER = {
 
 class UserFlows(TestCase):
     def test_login(self):
-        response = self.client.get(reverse("login"))
+        response = self.client.get(reverse("authnz:login"))
         self.assertContains(response, "Login", status_code=200)
 
     def test_register(self):
-        response = self.client.post(reverse("register"), data=EXAMPLE_USER)
+        response = self.client.post(reverse("authnz:register"), data=EXAMPLE_USER)
         self.assertEqual(response.status_code, 200)
 
     def test_logout(self):
-        response = self.client.post(reverse("logout"))
+        response = self.client.post(reverse("authnz:logout"))
         self.assertEqual(response.status_code, 302)

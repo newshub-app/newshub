@@ -67,9 +67,8 @@ class Unauthenticated(AuthenticationTestCase):
         response = req_method(
             reverse(view_name, kwargs=reverse_kwargs), follow=True, **req_kwargs
         )
-        login_url = reverse("authnz:login")
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.resolver_match.view_name, login_url)
+        self.assertEqual(response.resolver_match.view_name, "authnz:login")
 
     def test_index(self):
         self.unauthenticated_query_test("news:index")
