@@ -12,6 +12,9 @@
                 aria-expanded="false"
                 aria-label="Toggle menu"
         ><span class="navbar-toggler-icon"></span></button>
+    
+    
+        {% if user.is_authenticated %}
         <div class="collapse navbar-collapse" id="navbar-content">
             <ul class="navbar-nav me-auto">
                 <li class="nav-item">
@@ -53,10 +56,10 @@
                        data-bs-toggle="dropdown"
                        aria-expanded="false"
                     >
-                        <img src="{{ request.user.email|gravatar_url }}"
+                        <img src="{{ user.email|gravatar_url }}"
                              alt="profile picture"
                              style="border-radius: 50%; -moz-border-radius: 50%; -webkit-border-radius: 50%;"
-                        > {{ request.user.username }}
+                        > {{ user.username }}
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <li>
@@ -68,7 +71,7 @@
                         <li>
                             <hr class="dropdown-divider">
                         </li>
-                        {% if request.user.is_staff %}
+                        {% if user.is_staff %}
                             <li>
                                 <a class="dropdown-item" href="{% url 'admin:index' %}">
                                     <i class="bi bi-person-badge"></i> Administration
@@ -76,7 +79,7 @@
                             </li>
                         {% endif %}
                         <li>
-                            <a class="dropdown-item" 
+                            <a class="dropdown-item"
                                href="#"
                                onclick="document.getElementById('logoutForm').submit();"
                             >
@@ -86,6 +89,7 @@
                     </ul>
                 </li>
         </div>
+        {% endif %}
     </div>
 </nav>
 <form action="{% url 'authnz:logout' %}" method="post" id="logoutForm">
