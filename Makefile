@@ -1,6 +1,6 @@
 PYTHON := poetry run python
 MANAGE_PY := $(PYTHON) manage.py
-APPS := authnz news api
+APPS := authnz news #api
 FIXTURES := admin_user categories
 SAMPLE_FIXTURES := sample_links
 
