@@ -1,4 +1,5 @@
 {% load django_bootstrap5 %}
+{% load gravatar %}
 
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
@@ -52,7 +53,10 @@
                        data-bs-toggle="dropdown"
                        aria-expanded="false"
                     >
-                        <img src="" alt="profile picture"> {{ request.user.username }}
+                        <img src="{{ request.user.email|gravatar_url }}" 
+                             alt="profile picture"
+                             style="border-radius: 50%; -moz-border-radius: 50%; -webkit-border-radius: 50%;"
+                        > {{ request.user.username }}
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <li>
