@@ -70,7 +70,7 @@
                         </li>
                         {% if request.user.is_staff %}
                             <li>
-                                <a class="dropdown-item" href="/admin/">
+                                <a class="dropdown-item" href="{% url 'admin:index' %}">
                                     <i class="bi bi-person-badge"></i> Administration
                                 </a>
                             </li>
