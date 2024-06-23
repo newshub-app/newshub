@@ -13,7 +13,6 @@
         ><span class="navbar-toggler-icon"></span></button>
         <div class="collapse navbar-collapse" id="navbar-content">
             <ul class="navbar-nav me-auto">
-
                 <li class="nav-item">
                     <a href="{% url 'news:index' %}"
                        class="nav-link{% if request.resolver_match.view_name == 'index' %} active{% endif %}"
@@ -35,9 +34,7 @@
                         <button class="btn btn-outline-primary" type="submit">Search</button>
                     </form>
                 </li>
-            
                 &nbsp;
-
                 <li class="nav-item">
                     <button class="btn btn-outline-success justify-content-end"
                             type="button"
@@ -46,12 +43,45 @@
                     >Add Link
                     </button>
                 </li>
-
             </ul>
+            <ul class="navbar-nav ms-auto ">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle"
+                       href="#" id="navbarDropdown"
+                       role="button"
+                       data-bs-toggle="dropdown"
+                       aria-expanded="false"
+                    >
+                        <img src="" alt="profile picture"> {{ request.user.username }}
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li>
+                            {# TODO: create profile view and add link here #}
+                            <a class="dropdown-item" href="#">
+                                <i class="bi bi-person"></i> Profile
+                            </a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        {% if request.user.is_staff %}
+                            <li>
+                                <a class="dropdown-item" href="/admin/">
+                                    <i class="bi bi-person-badge"></i> Administration
+                                </a>
+                            </li>
+                        {% endif %}
+                        <li>
+                            {# TODO: actually logout when clicking logout menu #}
+                            <a class="dropdown-item" href="#">
+                                <i class="bi bi-box-arrow-right"></i> Log Out
+                            </a>
+                        </li>
+                    </ul>
         </div>
     </div>
 </nav>
-&nbsp;
+
 <div class="modal fade" id="new-link-modal" tabindex="-1" aria-labelledby="new-link-modal-title">
     <div class="modal-dialog">
         <div class="modal-content">
