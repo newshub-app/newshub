@@ -32,7 +32,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <form target="{% url 'news:links' %}" class="d-flex" role="search">
+                    <form action="{% url 'news:links' %}" class="d-flex" role="search" method="get">
                         <input name="search" class="form-control me-2" type="search" placeholder="Search"
                                aria-label="Search">
                         <button class="btn btn-outline-primary" type="submit">Search</button>
