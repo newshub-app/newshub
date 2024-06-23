@@ -12,8 +12,8 @@
                 aria-expanded="false"
                 aria-label="Toggle menu"
         ><span class="navbar-toggler-icon"></span></button>
-    
-    
+
+
         {% if user.is_authenticated %}
         <div class="collapse navbar-collapse" id="navbar-content">
             <ul class="navbar-nav me-auto">
@@ -48,7 +48,7 @@
                     </button>
                 </li>
             </ul>
-            <ul class="navbar-nav ms-auto ">
+            <ul class="navbar-nav ms-auto">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle"
                        href="#" id="navbarDropdown"
@@ -59,7 +59,7 @@
                         <img src="{{ user.email|gravatar_url }}"
                              alt="profile picture"
                              style="border-radius: 50%; -moz-border-radius: 50%; -webkit-border-radius: 50%;"
-                        > {{ user.username }}
+                        > {{ user.get_full_name|default:user.username }}
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <li>
