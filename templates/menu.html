@@ -28,14 +28,27 @@
                     >Links</a>
                 </li>
 
+                <li class="nav-item">
+                    <form target="{% url 'news:links' %}" class="d-flex" role="search">
+                        <input name="search" class="form-control me-2" type="search" placeholder="Search"
+                               aria-label="Search">
+                        <button class="btn btn-outline-primary" type="submit">Search</button>
+                    </form>
+                </li>
+            
+                &nbsp;
+
+                <li class="nav-item">
+                    <button class="btn btn-outline-success justify-content-end"
+                            type="button"
+                            data-bs-toggle="modal"
+                            data-bs-target="#new-link-modal"
+                    >Add Link
+                    </button>
+                </li>
+
             </ul>
         </div>
-        <button class="btn btn-outline-primary justify-content-end"
-                type="button"
-                data-bs-toggle="modal"
-                data-bs-target="#new-link-modal"
-        >Add Link
-        </button>
     </div>
 </nav>
 &nbsp;

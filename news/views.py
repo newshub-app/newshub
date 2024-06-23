@@ -29,6 +29,10 @@ class LinkCreateView(LoginRequiredMixin, CreateView):
     def get(self, request, *args, **kwargs):
         return HttpResponseNotAllowed(["POST"])
 
+    def form_valid(self, form):
+        form.instance.created_by = self.request.user
+        return super().form_valid(form)
+
 
 class LinkUpdateView(LoginRequiredMixin, UpdateView):
     model = Link

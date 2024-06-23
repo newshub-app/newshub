@@ -1,14 +1,11 @@
 from django.db.models import Q
-from django_filters import FilterSet, ModelChoiceFilter, CharFilter
+from django_filters import FilterSet, CharFilter
 
 from .models import *
 
 
 class LinkFilter(FilterSet):
-    search = CharFilter(method="search_filter", label="Content")
-    category = ModelChoiceFilter(
-        queryset=lambda request: Category.objects.all(), label="Category"
-    )
+    search = CharFilter(method="search_filter")
 
     class Meta:
         model = Link
@@ -20,4 +17,5 @@ class LinkFilter(FilterSet):
             Q(title__icontains=value)
             | Q(description__icontains=value)
             | Q(url__icontains=value)
+            | Q(category__name__icontains=value)
         )
