@@ -19,10 +19,10 @@ class Link(models.Model):
     url = models.URLField(unique=True)
     title = models.CharField(max_length=100)
     description = models.TextField()
-    category = models.ForeignKey(Category, on_delete=models.DO_NOTHING)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
-    created_by = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.title
