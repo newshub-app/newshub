@@ -19,7 +19,7 @@
             <ul class="navbar-nav me-auto">
                 <li class="nav-item">
                     <a href="{% url 'news:index' %}"
-                       class="nav-link{% if request.resolver_match.view_name == 'index' %} active{% endif %}"
+                       class="nav-link{% if request.resolver_match.view_name == 'news:index' %} active{% endif %}"
                        {% if request.resolver_match.view_name == 'index' %}aria-current="page" {% endif %}
                     >Home</a>
                 </li>
