@@ -53,7 +53,7 @@
                        data-bs-toggle="dropdown"
                        aria-expanded="false"
                     >
-                        <img src="{{ request.user.email|gravatar_url }}" 
+                        <img src="{{ request.user.email|gravatar_url }}"
                              alt="profile picture"
                              style="border-radius: 50%; -moz-border-radius: 50%; -webkit-border-radius: 50%;"
                         > {{ request.user.username }}
@@ -76,15 +76,22 @@
                             </li>
                         {% endif %}
                         <li>
-                            {# TODO: actually logout when clicking logout menu #}
-                            <a class="dropdown-item" href="#">
+                            <a class="dropdown-item" 
+                               href="#"
+                               onclick="document.getElementById('logoutForm').submit();"
+                            >
                                 <i class="bi bi-box-arrow-right"></i> Log Out
                             </a>
                         </li>
                     </ul>
+                </li>
         </div>
     </div>
 </nav>
+<form action="{% url 'authnz:logout' %}" method="post" id="logoutForm">
+    {% csrf_token %}
+    <input type="hidden">
+</form>
 
 <div class="modal fade" id="new-link-modal" tabindex="-1" aria-labelledby="new-link-modal-title">
     <div class="modal-dialog">
