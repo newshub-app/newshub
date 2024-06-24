@@ -59,7 +59,7 @@
                         <img src="{{ user.email|gravatar_url }}"
                              alt="profile picture"
                              style="border-radius: 50%; -moz-border-radius: 50%; -webkit-border-radius: 50%;"
-                        > {{ user.get_full_name|default:user.username }}
+                        > {{ user.get_full_name }}
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <li>

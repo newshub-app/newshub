@@ -16,6 +16,12 @@ def generate_api_key():
 class User(AbstractUser):
     api_key = CharField(max_length=40, null=False, default=generate_api_key)
 
+    def get_full_name(self):
+        full_name = f"{self.first_name} {self.last_name}".strip()
+        if full_name:
+            return full_name
+        return self.username
+
 
 class Group(BaseGroup):
     class Meta:
