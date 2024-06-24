@@ -57,7 +57,8 @@ RUN chown -R app:app $APP_DIR
 # set user
 USER app
 
-ENTRYPOINT ["/home/app/docker/entrypoint.sh"]
+# start application
+ENTRYPOINT ["/home/app/docker-entrypoint.sh"]
 CMD [ \
     "gunicorn", "newshub.asgi:application", \
     "-k", "uvicorn.workers.UvicornWorker", \
