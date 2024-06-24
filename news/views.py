@@ -34,6 +34,7 @@ class LinkCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
+# TODO: current user can modify its own links only
 class LinkUpdateView(LoginRequiredMixin, UpdateView):
     model = Link
     fields = ["url", "title", "description", "category"]
