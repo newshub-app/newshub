@@ -87,5 +87,8 @@ class Unauthenticated(AuthenticationTestCase):
         modified_link = EXAMPLE_LINK.copy()
         modified_link["title"] = UPDATED_TITLE
         self.unauthenticated_query_test(
-            "news:link_update", method="post", reverse_kwargs={"pk": 1}, data=modified_link
+            "news:link_update",
+            method="post",
+            reverse_kwargs={"pk": 1},
+            data=modified_link,
         )

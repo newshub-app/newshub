@@ -11,7 +11,7 @@ class NewsletterAdmin(admin.ModelAdmin):
         "links__title",
         "links__description",
         "links__url",
-        "links__category__name"
+        "links__category__name",
     ]
     list_filter = ["date_sent", "mailout_success"]
     date_hierarchy = "date_sent"
@@ -25,7 +25,12 @@ class CategoryAdmin(admin.ModelAdmin):
 class LinkAdmin(admin.ModelAdmin):
     list_display = ["title", "category", "url", "created", "updated"]
     search_fields = ["title", "category__name", "url", "description"]
-    list_filter = ["category", "created", "newsletter__date_sent", "newsletter__mailout_success"]
+    list_filter = [
+        "category",
+        "created",
+        "newsletter__date_sent",
+        "newsletter__mailout_success",
+    ]
     date_hierarchy = "created"
 
 

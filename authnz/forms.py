@@ -1,4 +1,8 @@
-from django.contrib.auth.forms import UserCreationForm, ReadOnlyPasswordHashField, UsernameField
+from django.contrib.auth.forms import (
+    UserCreationForm,
+    ReadOnlyPasswordHashField,
+    UsernameField,
+)
 from django.forms import ModelForm, CharField
 from django.urls import reverse_lazy
 
@@ -27,4 +31,6 @@ class UserForm(ModelForm):
         super().__init__(*args, **kwargs)
         password = self.fields.get("password")
         if password:
-            password.help_text = password.help_text.format(reset_pw_link=reverse_lazy("authnz:password_change"))
+            password.help_text = password.help_text.format(
+                reset_pw_link=reverse_lazy("authnz:password_change")
+            )
