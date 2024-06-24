@@ -9,13 +9,13 @@ from .models import *
 
 
 class IndexView(LoginRequiredMixin, TemplateView):
-    template_name = "index.html"
+    template_name = "news/index.html"
 
 
 class LinkListView(LoginRequiredMixin, FilterView):
     model = Link
     context_object_name = "links"
-    template_name_suffix = "_list"
+    template_name = "news/link_list.html"
     ordering = ["-created"]
     paginate_by = 5
     filterset_class = LinkFilter
@@ -37,4 +37,5 @@ class LinkCreateView(LoginRequiredMixin, CreateView):
 class LinkUpdateView(LoginRequiredMixin, UpdateView):
     model = Link
     fields = ["url", "title", "description", "category"]
+    template_name = "news/link_update.html"
     success_url = urls.reverse_lazy("news:links")
