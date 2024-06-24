@@ -1,0 +1,32 @@
+services:
+  app:
+    image: ghcr.io/newshub-app/newshub:latest
+    build: .
+    ports:
+      - "127.0.0.1:8000:8000"
+    networks:
+      - backend
+    volumes:
+      - static_files:/home/app/staticfiles
+    environment:
+        NEWSHUB_SECRET_KEY: "CHANGEME"
+        NEWSHUB_DB_HOST: db
+        WAIT_HOSTS: db:5432
+
+  db:
+    image: postgres:16-alpine
+    networks:
+      - backend
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: newshub
+      POSTGRES_USER: newshub
+      POSTGRES_PASSWORD: newshub
+
+networks:
+  backend:
+
+volumes:
+  static_files:
+  db_data:

@@ -4,6 +4,10 @@ APPS := authnz news #api
 FIXTURES := admin_user categories
 SAMPLE_FIXTURES := sample_links
 
+#
+# Django
+#
+
 run: ## Run django development server
 	@$(MANAGE_PY) runserver
 .PHONY: run
@@ -28,6 +32,22 @@ static: ## Collect static files
 
 test: ## Run unit tests
 	@$(MANAGE_PY) test
+
+#
+# Docker
+#
+
+docker-image: ## Build docker image
+	@docker compose build
+
+docker-run: ## Run docker compose stack
+	@docker compose up
+
+docker-run-dev: ## Run docker compose stack in dev mode
+	@docker compose -f docker-compose.yml -f docker-compose.dev.yml up
+
+docker-create-superuser: ## Create superuser in docker container
+	@docker compose exec -it app python manage.py createsuperuser
 
 help: ## Show this help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'

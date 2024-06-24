@@ -1,0 +1,11 @@
+services:
+  app:
+    command: python manage.py runserver 0.0.0.0:8000
+    environment:
+      - NEWSHUB_DEBUG=True
+    volumes:
+      - .:/home/app
+
+  db:
+    ports:
+      - "127.0.0.1:5432:5432"
