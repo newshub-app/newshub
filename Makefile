@@ -38,12 +38,12 @@ test: ## Run unit tests
 #
 
 docker-image: ## Build docker image
-	@docker compose build
+	@docker compose build --pull
 
-docker-run: ## Run docker compose stack
+docker-run: docker-image ## Run docker compose stack
 	@docker compose up
 
-docker-run-dev: ## Run docker compose stack in dev mode
+docker-run-dev: docker-image ## Run docker compose stack in dev mode
 	@docker compose -f docker-compose.yml -f docker-compose.dev.yml up
 
 docker-create-superuser: ## Create superuser in docker container
