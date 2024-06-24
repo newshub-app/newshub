@@ -1,0 +1,24 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: 2c9f875913ee60ca25ce70243dc24d5b6415598c  # frozen: v4.6.0
+    hooks:
+      - id: check-added-large-files
+        args:
+          - --maxkb=1000
+      - id: check-executables-have-shebangs
+      - id: check-shebang-scripts-are-executable
+      - id: check-json
+      - id: check-yaml
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+
+  - repo: https://github.com/psf/black
+    rev: 3702ba224ecffbcec30af640c149f231d90aebdb  # frozen: 24.4.2
+    hooks:
+      - id: black
+
+  - repo: https://github.com/python-poetry/poetry
+    rev: c85477da8a610a87133299f996f8d8a593aa7bff  # frozen: 1.8.0
+    hooks:
+      - id: poetry-check
+      - id: poetry-lock
