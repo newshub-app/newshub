@@ -5,5 +5,5 @@
     <option name="pathToExecutable" value="/usr/bin/black" />
     <option name="sdkName" value="Poetry (newshub)" />
   </component>
-  <component name="ProjectRootManager" version="2" project-jdk-name="Remote Python 3.12.4 Docker Compose (app)" project-jdk-type="Python SDK" />
+  <component name="ProjectRootManager" version="2" project-jdk-name="Poetry (newshub)" project-jdk-type="Python SDK" />
 </project>
