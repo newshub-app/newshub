@@ -8,7 +8,7 @@ class AuthenticationTestCase(TestCase):
     fixtures = ["categories.json", "admin_user.json"]
 
 
-class Authenticated(AuthenticationTestCase):
+class AuthenticatedRequests(AuthenticationTestCase):
     def authenticated_query_test(
         self,
         view_name,
@@ -47,19 +47,23 @@ class Authenticated(AuthenticationTestCase):
         self.assertContains(response, LINKS_TITLE, status_code=200)
 
     def test_link_update_get(self):
-        self.client.post("/links/new/", data=EXAMPLE_LINK)
-        response = self.client.get("/links/1/")
+        self.client.post(reverse("news:link_create"), data=EXAMPLE_LINK)
+        response = self.client.get(reverse("news:link_update", kwargs={"pk": 1}))
         self.assertContains(response, LINK_EDIT_TITLE, status_code=200)
 
     def test_link_update_post(self):
-        self.client.post("/links/new/", data=EXAMPLE_LINK)
+        self.client.post(reverse("news:link_create"), data=EXAMPLE_LINK)
         modified_link = EXAMPLE_LINK.copy()
         modified_link["title"] = UPDATED_TITLE
-        response = self.client.post("/links/1/", data=modified_link, follow=True)
+        response = self.client.post(
+            reverse("news:link_update", kwargs={"pk": 1}),
+            data=modified_link,
+            follow=True,
+        )
         self.assertContains(response, UPDATED_TITLE, status_code=200)
 
 
-class Unauthenticated(AuthenticationTestCase):
+class AuthenticationEnforcement(AuthenticationTestCase):
     def unauthenticated_query_test(
         self, view_name, method="get", reverse_kwargs=None, **req_kwargs
     ):
