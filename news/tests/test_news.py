@@ -1,12 +1,25 @@
 from django.test import TestCase
 from django.urls import reverse
 
+from authnz.models import User
 from .data import *
 from ..models import Link
 
 
 class AuthenticatedRequests(TestCase):
-    fixtures = ["categories.json", "admin_user.json"]
+    fixtures = ["categories.json"]
+
+    @classmethod
+    def setUpTestData(cls):
+        cls.test_admin = User.objects.create_user(
+            username=ADMIN_USERNAME, password=ADMIN_PASSWORD, is_staff=True
+        )
+        cls.test_user = User.objects.create_user(
+            username=USER1_USERNAME, password=USER_PASSWORD
+        )
+        cls.test_user2 = User.objects.create_user(
+            username=USER2_USERNAME, password=USER_PASSWORD
+        )
 
     def authenticated_query_test(
         self,
@@ -28,7 +41,7 @@ class AuthenticatedRequests(TestCase):
             self.assertContains(response, expected_content)
 
     def setUp(self):
-        self.client.login(username="admin", password="admin")
+        self.client.login(username=USER1_USERNAME, password=USER_PASSWORD)
 
     def test_index(self):
         self.authenticated_query_test("news:index", expected_content=INDEX_TITLE)
@@ -62,3 +75,30 @@ class AuthenticatedRequests(TestCase):
             follow=True,
         )
         self.assertContains(response, UPDATED_TITLE, status_code=200)
+
+    def test_non_owner_cannot_edit_link(self):
+        self.client.post(reverse("news:link_create"), data=EXAMPLE_LINK)
+        resp = self.client.post(
+            reverse("news:link_update", kwargs={"pk": Link.objects.last().pk}),
+            data=EXAMPLE_LINK,
+        )
+        self.assertEqual(resp.status_code, 302)
+        self.client.logout()
+        self.client.login(username=USER2_USERNAME, password=USER_PASSWORD)
+        resp = self.client.post(
+            reverse("news:link_update", kwargs={"pk": Link.objects.last().pk}),
+            data=EXAMPLE_LINK,
+        )
+        self.assertEqual(resp.status_code, 403)
+
+    def test_admin_can_edit_link(self):
+        self.client.post(reverse("news:link_create"), data=EXAMPLE_LINK)
+        self.client.logout()
+        self.client.login(username=ADMIN_USERNAME, password=ADMIN_PASSWORD)
+        modified_link = EXAMPLE_LINK.copy()
+        modified_link["title"] = UPDATED_TITLE
+        resp = self.client.post(
+            reverse("news:link_update", kwargs={"pk": Link.objects.last().pk}),
+            data=modified_link,
+        )
+        self.assertEqual(resp.status_code, 302)

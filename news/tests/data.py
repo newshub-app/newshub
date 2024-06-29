@@ -9,3 +9,8 @@ EXAMPLE_LINK = {
     "category": 1,
 }
 UPDATED_TITLE = "Modified"
+ADMIN_USERNAME = "admin"
+ADMIN_PASSWORD = "admin"
+USER1_USERNAME = "user1"
+USER2_USERNAME = "user2"
+USER_PASSWORD = "password"

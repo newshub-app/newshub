@@ -8,6 +8,14 @@ from .filters import LinkFilter
 from .models import *
 
 
+class OwnerRequiredUpdateView(LoginRequiredMixin, UpdateView):
+    def dispatch(self, request, *args, **kwargs):
+        obj = self.get_object()
+        if obj.created_by != request.user and not request.user.is_staff:
+            return self.handle_no_permission()
+        return super().dispatch(request, *args, **kwargs)
+
+
 class IndexView(LoginRequiredMixin, TemplateView):
     template_name = "news/index.html"
 
@@ -34,8 +42,7 @@ class LinkCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-# TODO: current user can modify its own links only
-class LinkUpdateView(LoginRequiredMixin, UpdateView):
+class LinkUpdateView(OwnerRequiredUpdateView):
     model = Link
     fields = ["url", "title", "description", "category"]
     template_name = "news/link_update.html"
