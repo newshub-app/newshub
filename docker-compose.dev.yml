@@ -2,7 +2,7 @@ services:
   app:
     command: python manage.py runserver 0.0.0.0:8000
     environment:
-      - NEWSHUB_DEBUG=True
+      NEWSHUB_DEBUG: True
     volumes:
       - .:/home/app
 

@@ -8,8 +8,9 @@ services:
       - backend
     volumes:
       - static_files:/home/app/staticfiles
+    env_file:
+      - prod_settings.env
     environment:
-        NEWSHUB_SECRET_KEY: "CHANGEME"
         NEWSHUB_DB_HOST: db
         NEWSHUB_DB_NAME: newshub
         NEWSHUB_DB_USER: newshub
