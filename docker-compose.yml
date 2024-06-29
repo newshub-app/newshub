@@ -11,6 +11,9 @@ services:
     environment:
         NEWSHUB_SECRET_KEY: "CHANGEME"
         NEWSHUB_DB_HOST: db
+        NEWSHUB_DB_NAME: newshub
+        NEWSHUB_DB_USER: newshub
+        NEWSHUB_DB_PASSWORD: newshub
         WAIT_HOSTS: db:5432
 
   db:
