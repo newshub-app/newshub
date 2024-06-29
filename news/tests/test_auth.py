@@ -1,10 +1,23 @@
 from django.test import TestCase
 from django.urls import reverse
 
+from authnz.models import User
 from .data import *
+from ..models import *
 
 
 class AuthenticationEnforced(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.test_user = User.objects.create_user(
+            username=USER1_USERNAME, password=USER_PASSWORD
+        )
+        cls.test_category = Category.objects.create(name="SampleCategory")
+        link_data = EXAMPLE_LINK.copy()
+        link_data["category"] = cls.test_category
+        link_data["created_by"] = cls.test_user
+        cls.test_link = Link.objects.create(**link_data)
+
     def unauthenticated_query_test(
         self, view_name, method="get", reverse_kwargs=None, **req_kwargs
     ):
@@ -25,7 +38,9 @@ class AuthenticationEnforced(TestCase):
         self.unauthenticated_query_test("news:links")
 
     def test_link_update_get(self):
-        self.unauthenticated_query_test("news:link_update", reverse_kwargs={"pk": 1})
+        self.unauthenticated_query_test(
+            "news:link_update", reverse_kwargs={"pk": Link.objects.last().pk}
+        )
 
     def test_link_update_post(self):
         modified_link = EXAMPLE_LINK.copy()
@@ -33,6 +48,6 @@ class AuthenticationEnforced(TestCase):
         self.unauthenticated_query_test(
             "news:link_update",
             method="post",
-            reverse_kwargs={"pk": 1},
+            reverse_kwargs={"pk": Link.objects.last().pk},
             data=modified_link,
         )
