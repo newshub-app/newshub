@@ -10,7 +10,6 @@ class RegisterView(FormView):
     success_url = reverse_lazy("news:index")
 
 
-# TODO: current user can modify its own profile only
 class ProfileView(LoginRequiredMixin, UpdateView):
     model = User
     form_class = UserForm
