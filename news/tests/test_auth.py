@@ -2,6 +2,7 @@ from django.test import TestCase
 from django.urls import reverse
 
 from .data import *
+from ..models import Link
 
 
 class AuthenticationTestCase(TestCase):
@@ -48,7 +49,9 @@ class AuthenticatedRequests(AuthenticationTestCase):
 
     def test_link_update_get(self):
         self.client.post(reverse("news:link_create"), data=EXAMPLE_LINK)
-        response = self.client.get(reverse("news:link_update", kwargs={"pk": 1}))
+        response = self.client.get(
+            reverse("news:link_update", kwargs={"pk": Link.objects.last().pk})
+        )
         self.assertContains(response, LINK_EDIT_TITLE, status_code=200)
 
     def test_link_update_post(self):
@@ -56,14 +59,14 @@ class AuthenticatedRequests(AuthenticationTestCase):
         modified_link = EXAMPLE_LINK.copy()
         modified_link["title"] = UPDATED_TITLE
         response = self.client.post(
-            reverse("news:link_update", kwargs={"pk": 1}),
+            reverse("news:link_update", kwargs={"pk": Link.objects.last().pk}),
             data=modified_link,
             follow=True,
         )
         self.assertContains(response, UPDATED_TITLE, status_code=200)
 
 
-class AuthenticationEnforcement(AuthenticationTestCase):
+class AuthenticationEnforced(AuthenticationTestCase):
     def unauthenticated_query_test(
         self, view_name, method="get", reverse_kwargs=None, **req_kwargs
     ):
@@ -87,7 +90,6 @@ class AuthenticationEnforcement(AuthenticationTestCase):
         self.unauthenticated_query_test("news:link_update", reverse_kwargs={"pk": 1})
 
     def test_link_update_post(self):
-        self.client.post("news:link_create", data=EXAMPLE_LINK)
         modified_link = EXAMPLE_LINK.copy()
         modified_link["title"] = UPDATED_TITLE
         self.unauthenticated_query_test(

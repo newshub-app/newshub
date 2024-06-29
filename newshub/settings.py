@@ -249,10 +249,5 @@ if DEBUG and not TESTING:
     EMAIL_BACKEND = "mail_panel.backend.MailToolbarBackend"
     CORS_ALLOW_ALL_ORIGINS = True
 if TESTING:
-    DATABASES["default"] = {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
-    PASSWORD_RESET_TIMEOUT = 0
     EMAIL_BACKEND = "django.core.mail.backends.locmem.EmailBackend"
     CORS_ALLOW_ALL_ORIGINS = True
