@@ -24,6 +24,7 @@ django-unfold = "^0.29.1"
 django-debug-toolbar = "^4.4.2"
 black = "^24.4.2"
 poetry-plugin-export = "^1.8.0"
+faker = "^26.0.0"
 
 [build-system]
 requires = ["poetry-core"]
