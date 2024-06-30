@@ -28,7 +28,7 @@ SECRET_KEY = os.environ.get(
 )
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get("NEWSHUB_DEBUG", "false").lower() == "true"
+DEBUG = os.environ.get("NEWSHUB_DEBUG", "no").lower() == "yes"
 TESTING = "test" in sys.argv
 
 ALLOWED_HOSTS = os.environ.get(
@@ -261,6 +261,7 @@ DEBUG_TOOLBAR_CONFIG = {
         "debug_toolbar.panels.profiling.ProfilingPanel",
         "debug_toolbar.panels.redirects.RedirectsPanel",
     ],
+    "SHOW_TOOLBAR_CALLBACK": lambda _: DEBUG,
 }
 
 DEBUG_TOOLBAR_APPS = [
@@ -268,18 +269,27 @@ DEBUG_TOOLBAR_APPS = [
     "mail_panel",
 ]
 
+DEBUG_TOOLBAR_CALLBACK = "debug_toolbar.middleware.show_toolbar"
+
 #
 # Email settings
 # https://docs.djangoproject.com/en/5.0/topics/email/
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+
 EMAIL_HOST = os.environ.get("NEWSHUB_EMAIL_HOST", "smtp.eu.mailgun.org")
+
 EMAIL_PORT = int(os.environ.get("NEWSHUB_EMAIL_PORT", "587"))
+
 EMAIL_HOST_USER = os.environ.get("NEWSHUB_EMAIL_USER", "")
+
 EMAIL_HOST_PASSWORD = os.environ.get("NEWSHUB_EMAIL_PASSWORD", "")
+
 EMAIL_USE_TLS = True
+
 EMAIL_SUBJECT_PREFIX = "[NewsHub] "
 
+EMAIL_FROM = os.environ.get("NEWSHUB_EMAIL_FROM", EMAIL_HOST_USER)
 
 #
 # Django debugging and unit tests settings

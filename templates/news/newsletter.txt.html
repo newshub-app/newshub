@@ -1,0 +1,8 @@
+# Links curated last week:
+
+{% for link in links %}
+{{ forloop.counter }}. {{ link.title }} - {{ link.url }} (shared by {{ link.created_by.get_full_name }})
+    {{ link.description }}
+{% endfor %}
+
+This newsletter can also be read online here along with older editions: {{ archives_url|default:'#' }}

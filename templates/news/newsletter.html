@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<body>
+<h1>Links curated last week:</h1>
+<ol>
+    {% for link in links %}
+    <li>
+        <a href="{{ link.url }}">{{ link.title }}</a> <small>(shared by {{ link.created_by.get_full_name }})</small>
+        <br>
+        <p>{{ link.description }}</p>
+    </li>
+    {% endfor %}
+</ol>
+<br>
+This newsletter can also be read online <a href="{{ archives_url|default:'#' }}">here</a> along with older editions.
+</body>
+</html>
