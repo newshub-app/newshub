@@ -7,7 +7,7 @@
     {% for link in object_list %}
         <div class="card">
             <div class="card-header">
-                {% if link.created_by == user %}
+                {% if link.created_by == user or user.is_staff %}
                     <a class="btn btn-outline-primary btn-sm"
                        role="button"
                        href="{% url 'news:link_update' pk=link.id %}"
