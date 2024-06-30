@@ -1,6 +1,7 @@
 services:
   app:
     image: ghcr.io/newshub-app/newshub:latest
+    build: .
     ports:
       - "127.0.0.1:8000:8000"
     networks:
@@ -15,14 +16,25 @@ services:
 
   celery:
     image: ghcr.io/newshub-app/newshub:latest
+    build: .
     command: celery -A newshub worker -l INFO
     networks:
       - backend
     env_file:
       - settings.env
     environment:
-        CELERY_BROKER_URL: amqp://newshub:newshub@rabbitmq:5672//
         WAIT_HOSTS: app:8000,db:5432,rabbitmq:5672,redis:6379
+
+  celery_beat:
+    image: ghcr.io/newshub-app/newshub:latest
+    build: .
+    command: celery -A newshub beat -l INFO
+    networks:
+      - backend
+    env_file:
+      - settings.env
+    environment:
+        WAIT_HOSTS: app:8000,db:5432,rabbitmq:5672
 
   rabbitmq:
     image: rabbitmq:3

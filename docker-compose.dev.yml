@@ -7,12 +7,6 @@ services:
     volumes:
       - .:/home/app
 
-  celery:
-    build: .
-    command: watchmedo auto-restart --directory=/home/app --pattern=*.py --recursive -- celery -A newshub worker -l INFO
-    environment:
-      NEWSHUB_DEBUG: True
-
   rabbitmq:
     image: rabbitmq:3-management
     ports:
