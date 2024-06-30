@@ -4,7 +4,7 @@ from .models import *
 
 
 class NewsletterAdmin(admin.ModelAdmin):
-    list_display = ["date_sent", "mailout_success"]
+    list_display = ["date_sent"]
     search_fields = [
         "recipients__username",
         "recipients__email",
@@ -13,7 +13,7 @@ class NewsletterAdmin(admin.ModelAdmin):
         "links__url",
         "links__category__name",
     ]
-    list_filter = ["date_sent", "mailout_success"]
+    list_filter = ["date_sent"]
     date_hierarchy = "date_sent"
 
 
@@ -29,7 +29,6 @@ class LinkAdmin(admin.ModelAdmin):
         "category",
         "created",
         "newsletter__date_sent",
-        "newsletter__mailout_success",
     ]
     date_hierarchy = "created"
 

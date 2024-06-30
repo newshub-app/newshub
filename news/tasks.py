@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
 from django.db import transaction
 from django.db.models import Q
@@ -35,7 +36,7 @@ def send_newsletter():
     message = EmailMultiAlternatives(
         subject="NewsHub newsletter",
         body=text_content,
-        # from_email=settings.EMAIL_FROM,
+        from_email=settings.EMAIL_FROM,
         bcc=recipients,
     )
     message.attach_alternative(html_content, "text/html")
@@ -46,7 +47,6 @@ def send_newsletter():
         with transaction.atomic():
             links.update(newsletter=newsletter)
             newsletter.recipients.set(users)
-            newsletter.mailout_success = True
             newsletter.save()
     else:
         print("Failed to send newsletter")

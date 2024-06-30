@@ -7,7 +7,6 @@ __all__ = ["Newsletter", "Category", "Link"]
 
 class Newsletter(models.Model):
     date_sent = models.DateTimeField(auto_now_add=True)
-    mailout_success = models.BooleanField(default=False)
     recipients = models.ManyToManyField(User)
 
 
