@@ -1,8 +1,11 @@
 PYTHON := poetry run python
 MANAGE_PY := $(PYTHON) manage.py
-APPS := authnz news #api
+
+APPS := authnz news
 FIXTURES := admin_user categories
-SAMPLE_FIXTURES := sample_links
+
+PROD_COMPOSE_FILE := -f docker-compose.yml
+DEV_COMPOSE_FILE := $(PROD_COMPOSE_FILE) -f docker-compose.dev.yml
 
 #
 # Django
@@ -22,16 +25,19 @@ migrate: migrations ## Apply database migrations
 
 loaddata: ## Load database fixtures
 	@$(MANAGE_PY) loaddata $(FIXTURES)
+.PHONY: loaddata
 
-loadsamples: loaddata ## Load sample data
-	@$(MANAGE_PY) loaddata $(SAMPLE_FIXTURES)
+fakedata: ## Generate fake data
+	@$(MANAGE_PY) genfakedata
+.PHONY: fakedata
 
 static: ## Collect static files
 	@$(MANAGE_PY) collectstatic --noinput
 .PHONY: static
 
 test: ## Run unit tests
-	@$(MANAGE_PY) test
+	@$(MANAGE_PY) test --keepdb
+.PHONY: tests
 
 #
 # Docker
@@ -39,15 +45,19 @@ test: ## Run unit tests
 
 docker-image: ## Build docker image
 	@docker compose build --pull
+.PHONY: docker-image
 
 docker-run: docker-image ## Run docker compose stack
 	@docker compose up
+.PHONY: docker-run
 
 docker-run-dev: docker-image ## Run docker compose stack in dev mode
-	@docker compose -f docker-compose.yml -f docker-compose.dev.yml up
+	@docker compose $(DEV_COMPOSE_FILE) up
+.PHONY: docker-run-dev
 
 docker-create-superuser: ## Create superuser in docker container
 	@docker compose exec -it app python manage.py createsuperuser
+.PHONY: docker-create-superuser
 
 help: ## Show this help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
