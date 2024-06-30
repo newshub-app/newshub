@@ -4,6 +4,10 @@ MANAGE_PY := $(PYTHON) manage.py
 APPS := authnz news
 FIXTURES := admin_user categories
 
+DOCKER_IMAGE_NAME := ghcr.io/newshub-app/newshub
+DOCKER_IMAGE_TAG := latest
+DOCKER_IMAGE := $(DOCKER_IMAGE_NAME):$(DOCKER_IMAGE_TAG)
+
 PROD_COMPOSE_FILE := -f docker-compose.yml
 DEV_COMPOSE_FILE := $(PROD_COMPOSE_FILE) -f docker-compose.dev.yml
 
@@ -44,7 +48,7 @@ test: ## Run unit tests
 #
 
 docker-image: ## Build docker image
-	@docker compose build --pull
+	@docker build -t $(DOCKER_IMAGE) --pull --load .
 .PHONY: docker-image
 
 docker-run: docker-image ## Run docker compose stack
