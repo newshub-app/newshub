@@ -24,8 +24,16 @@ RUN pip install --no-cache-dir --upgrade \
 
 # build dependencies wheels
 COPY pyproject.toml poetry.lock /tmp/
-RUN poetry export --with dev -C /tmp -f requirements.txt --output /tmp/requirements.txt && \
-    pip wheel --no-cache-dir --no-deps --wheel-dir /usr/src/app/wheels -r /tmp/requirements.txt
+RUN poetry export \
+      --with dev \
+      -C /tmp \
+      -f requirements.txt \
+      --output /tmp/requirements.txt && \
+    pip wheel \
+      --no-cache-dir \
+      --no-deps \
+      --wheel-dir /usr/src/app/wheels \
+      -r /tmp/requirements.txt
 
 #
 # final image
