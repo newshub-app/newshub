@@ -1,4 +1,5 @@
 from django.core.mail import EmailMultiAlternatives
+from django.db import transaction
 from django.db.models import Q
 from django.template.loader import render_to_string
 
@@ -16,9 +17,7 @@ def send_newsletter():
     if links.count() == 0:
         print("No new links to add to the newsletter")
         return True
-    for link in links:
-        print(f"Adding link to newsletter: {link.title}")
-    print(f"Added {links.count()} links to the newsletter")
+    print(f"Adding {links.count()} links to the newsletter")
 
     print("Generating newsletter content")
     recipients = users.values_list("email", flat=True)
@@ -43,11 +42,12 @@ def send_newsletter():
     messages_sent = message.send(fail_silently=True)
 
     if messages_sent > 0:
-        print("Newsletter sent successfully")
-        links.update(newsletter=newsletter)
-        newsletter.recipients.set(users)
-        newsletter.mailout_success = True
-        newsletter.save()
+        print(f"Newsletter sent successfully ({messages_sent})")
+        with transaction.atomic():
+            links.update(newsletter=newsletter)
+            newsletter.recipients.set(users)
+            newsletter.mailout_success = True
+            newsletter.save()
     else:
         print("Failed to send newsletter")
         newsletter.delete()
