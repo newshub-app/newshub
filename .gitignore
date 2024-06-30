@@ -322,4 +322,4 @@ dmypy.json
 cython_debug/
 
 ### Project files
-prod_settings.env
+*settings.env

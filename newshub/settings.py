@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     "corsheaders",
     # "rest_framework",
     # "rest_framework_simplejwt",
+    "django_celery_results",
     "django_filters",
     "django_bootstrap5",
     "authnz.apps.AuthnzConfig",
@@ -110,6 +111,17 @@ DATABASES = {
         "PASSWORD": os.environ.get("NEWSHUB_DB_PASSWORD", "newshub"),
         "HOST": os.environ.get("NEWSHUB_DB_HOST", "127.0.0.1"),
         "PORT": os.environ.get("NEWSHUB_DB_PORT", "5432"),
+    }
+}
+
+#
+# Cache
+# https://docs.djangoproject.com/en/5.0/topics/cache/
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.redis.RedisCache",
+        "LOCATION": os.environ.get("NEWSHUB_REDIS_URL", "redis://127.0.0.1:6379"),
     }
 }
 
@@ -184,6 +196,20 @@ STORAGES = {
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+#
+# Celery
+# https://docs.celeryq.dev/en/stable/django/first-steps-with-django.html#using-celery-with-django
+
+CELERY_TIMEZONE = TIME_ZONE
+
+CELERY_BROKER_URL = os.environ.get(
+    "CELERY_BROKER_URL", "amqp://guest:guest@rabbitmq:5672//"
+)
+
+CELERY_RESULT_BACKEND = "django-db"
+
+CELERY_CACHE_BACKEND = "django-cache"
 
 #
 # CORS

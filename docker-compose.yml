@@ -1,7 +1,6 @@
 services:
   app:
     image: ghcr.io/newshub-app/newshub:latest
-    build: .
     ports:
       - "127.0.0.1:8000:8000"
     networks:
@@ -9,24 +8,50 @@ services:
     volumes:
       - static_files:/home/app/staticfiles
     env_file:
-      - prod_settings.env
+      - settings.env
     environment:
-        NEWSHUB_DB_HOST: db
-        NEWSHUB_DB_NAME: newshub
-        NEWSHUB_DB_USER: newshub
-        NEWSHUB_DB_PASSWORD: newshub
-        WAIT_HOSTS: db:5432
+        NEWSHUB_BOOTSTRAP: yes
+        WAIT_HOSTS: db:5432,redis:6379
+
+  celery:
+    image: ghcr.io/newshub-app/newshub:latest
+    command: celery -A newshub worker -l INFO
+    networks:
+      - backend
+    env_file:
+      - settings.env
+    environment:
+        CELERY_BROKER_URL: amqp://newshub:newshub@rabbitmq:5672//
+        WAIT_HOSTS: app:8000,db:5432,rabbitmq:5672,redis:6379
+
+  rabbitmq:
+    image: rabbitmq:3
+    networks:
+      - backend
+    environment:
+      RABBITMQ_DEFAULT_USER: newshub
+      RABBITMQ_DEFAULT_PASS: newshub
 
   db:
-    image: postgres:16-alpine
+    image: postgres:16
     networks:
       - backend
     volumes:
       - db_data:/var/lib/postgresql/data
+    env_file:
+      - settings.env
     environment:
       POSTGRES_DB: newshub
       POSTGRES_USER: newshub
       POSTGRES_PASSWORD: newshub
+
+  redis:
+    image: redis:7
+    command: redis-server --save 60 1 --loglevel warning
+    networks:
+      - backend
+    volumes:
+      - redis_data:/data
 
 networks:
   backend:
@@ -34,3 +59,4 @@ networks:
 volumes:
   static_files:
   db_data:
+  redis_data:
