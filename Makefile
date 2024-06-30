@@ -32,8 +32,11 @@ loaddata: ## Load database fixtures
 .PHONY: loaddata
 
 fakedata: ## Generate fake data
-	@$(MANAGE_PY) genfakedata
+	@$(MANAGE_PY) genfakedata --users --categories --links
 .PHONY: fakedata
+
+fakelinks: ## Generate fake links
+	@$(MANAGE_PY) genfakedata --links --num-links 20
 
 static: ## Collect static files
 	@$(MANAGE_PY) collectstatic --noinput

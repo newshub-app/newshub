@@ -2,10 +2,26 @@ services:
   app:
     build: .
     command: python manage.py runserver 0.0.0.0:8000
-    environment:
-      NEWSHUB_DEBUG: True
     volumes:
       - .:/home/app
+    environment:
+      NEWSHUB_DEBUG: yes
+
+  celery:
+    build: .
+    command: watchmedo auto-restart --directory=. --patterns='*.py' --recursive -- celery -A newshub worker --concurrency=1 -l INFO
+    volumes:
+      - .:/home/app
+    environment:
+      NEWSHUB_DEBUG: yes
+
+  celery_beat:
+    build: .
+    command: watchmedo auto-restart --directory=. --patterns='*.py' --recursive -- celery -A newshub beat -l INFO
+    volumes:
+      - .:/home/app
+    environment:
+      NEWSHUB_DEBUG: yes
 
   rabbitmq:
     image: rabbitmq:3-management
@@ -14,4 +30,8 @@ services:
 
   db:
     ports:
-      - "127.0.0.1:5432:5432"
+      - 127.0.0.1:5432:5432
+
+  redis:
+    ports:
+      - 127.0.0.1:6379:6379
