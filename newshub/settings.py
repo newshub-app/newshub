@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     "corsheaders",
     # "rest_framework",
     # "rest_framework_simplejwt",
+    "django_celery_beat",
     "django_celery_results",
     "django_filters",
     "django_bootstrap5",
@@ -202,6 +203,8 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # https://docs.celeryq.dev/en/stable/django/first-steps-with-django.html#using-celery-with-django
 
 CELERY_TIMEZONE = TIME_ZONE
+
+CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
 
 CELERY_BROKER_URL = os.environ.get(
     "CELERY_BROKER_URL", "amqp://guest:guest@rabbitmq:5672//"

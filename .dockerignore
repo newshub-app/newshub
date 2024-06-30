@@ -1,0 +1,8 @@
+.github/
+.idea/
+.pre-commit-config.yaml
+docker-compose*
+Dockerfile
+Makefile
+README.md
+*.env
