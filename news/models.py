@@ -1,13 +1,12 @@
+from django.conf import settings
 from django.db import models
-
-from authnz.models import User
 
 __all__ = ["Newsletter", "Category", "Link"]
 
 
 class Newsletter(models.Model):
     date_sent = models.DateTimeField(auto_now_add=True)
-    recipients = models.ManyToManyField(User)
+    recipients = models.ManyToManyField(settings.AUTH_USER_MODEL)
 
 
 class Category(models.Model):
@@ -27,7 +26,7 @@ class Link(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
-    created_by = models.ForeignKey(User, on_delete=models.CASCADE)
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     newsletter = models.ForeignKey(
         Newsletter, on_delete=models.CASCADE, null=True, blank=True
     )
