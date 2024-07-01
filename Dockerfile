@@ -1,18 +1,15 @@
 #
 # base image
 #
-FROM python:3.12 AS build
+FROM python:3.12-alpine AS build
 WORKDIR /app
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
 # install system dependencies
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
-    build-essential \
-    libpq-dev \
-    && \
-    rm -rf /var/lib/apt/lists/*
+RUN apk add --update --no-cache \
+    build-base \
+    postgresql-dev
 
 # install/update packaging tools
 RUN pip install --no-cache-dir --upgrade \
@@ -38,23 +35,20 @@ RUN poetry export \
 #
 # final image
 #
-FROM python:3.12
+FROM python:3.12-alpine
 ENV APP_DIR="/home/app"
 WORKDIR $APP_DIR
 
 # create app user
 RUN addgroup --system app && \
-    adduser --system --group app
+    adduser -S -G app app
 
 # install wait utility
 COPY --from=ghcr.io/ufoscout/docker-compose-wait:latest /wait /wait
 
 # install system dependencies
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
-    postgresql-client \
-    && \
-    rm -rf /var/lib/apt/lists/*
+RUN apk add --update --no-cache \
+    postgresql-client
 
 # install dependencies
 COPY --from=build /usr/src/app/wheels /wheels

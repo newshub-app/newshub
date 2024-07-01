@@ -1,6 +1,6 @@
-#!/bin/bash
+#!/bin/sh
 
-if [ "${NEWSHUB_BOOTSTRAP}" == "yes" ]
+if [ "${NEWSHUB_BOOTSTRAP}" = "yes" ]
 then
   python manage.py collectstatic --noinput
   /wait

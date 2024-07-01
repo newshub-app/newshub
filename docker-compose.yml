@@ -34,7 +34,7 @@ services:
         WAIT_HOSTS: app:8000,db:5432,rabbitmq:5672
 
   rabbitmq:
-    image: rabbitmq:3
+    image: rabbitmq:3-alpine
     networks:
       - backend
     environment:
@@ -42,7 +42,7 @@ services:
       RABBITMQ_DEFAULT_PASS: newshub
 
   db:
-    image: postgres:16
+    image: postgres:16-alpine
     networks:
       - backend
     volumes:
@@ -55,7 +55,7 @@ services:
       POSTGRES_PASSWORD: newshub
 
   redis:
-    image: redis:7
+    image: redis:7-alpine
     command: redis-server --save 60 1 --loglevel warning
     networks:
       - backend
