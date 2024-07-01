@@ -1,32 +1,37 @@
-.shared_settings: &shared_settings
-  image: ghcr.io/newshub-app/newshub:latest
-  networks:
-    - backend
-  env_file:
-    - settings.env
-
 services:
   app:
-    <<: *shared_settings
+    image: ghcr.io/newshub-app/newshub:latest
     ports:
       - 127.0.0.1:8000:8000
+    networks:
+      - backend
     volumes:
       - static_files:/home/app/staticfiles
+    env_file:
+      - settings.env
     environment:
-      NEWSHUB_BOOTSTRAP: yes
-      WAIT_HOSTS: db:5432,redis:6379
+        NEWSHUB_BOOTSTRAP: yes
+        WAIT_HOSTS: db:5432,redis:6379
 
   celery:
-    <<: *shared_settings
+    image: ghcr.io/newshub-app/newshub:latest
     command: celery -A newshub worker -l INFO
+    networks:
+      - backend
+    env_file:
+      - settings.env
     environment:
-      WAIT_HOSTS: app:8000,db:5432,rabbitmq:5672,redis:6379
+        WAIT_HOSTS: app:8000,db:5432,rabbitmq:5672,redis:6379
 
   celery_beat:
-    <<: *shared_settings
+    image: ghcr.io/newshub-app/newshub:latest
     command: celery -A newshub beat -l INFO
+    networks:
+      - backend
+    env_file:
+      - settings.env
     environment:
-      WAIT_HOSTS: app:8000,db:5432,rabbitmq:5672
+        WAIT_HOSTS: app:8000,db:5432,rabbitmq:5672
 
   rabbitmq:
     image: rabbitmq:3

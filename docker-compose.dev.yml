@@ -1,22 +1,27 @@
-.shared_settings: &shared_settings
-  build: .
-  volumes:
-    - .:/home/app
-  environment:
-    NEWSHUB_DEBUG: yes
-
 services:
   app:
-    <<: *shared_settings
+    build: .
     command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/home/app
+    environment:
+      NEWSHUB_DEBUG: yes
 
   celery:
-    <<: *shared_settings
+    build: .
     command: watchmedo auto-restart --directory=. --patterns='*.py' --recursive -- celery -A newshub worker --concurrency=1 -l INFO
+    volumes:
+      - .:/home/app
+    environment:
+      NEWSHUB_DEBUG: yes
 
   celery_beat:
-    <<: *shared_settings
+    build: .
     command: watchmedo auto-restart --directory=. --patterns='*.py' --recursive -- celery -A newshub beat -l INFO
+    volumes:
+      - .:/home/app
+    environment:
+      NEWSHUB_DEBUG: yes
 
   rabbitmq:
     image: rabbitmq:3-management
