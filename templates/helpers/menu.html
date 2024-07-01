@@ -32,6 +32,12 @@
                 </li>
 
                 <li class="nav-item">
+                    <a href="{% url 'news:newsletters' %}"
+                       class="nav-link"
+                    ><i class="bi bi-file-text"></i> Newsletters</a>
+                </li>
+
+                <li class="nav-item">
                     <form action="{% url 'news:links' %}" class="d-flex" role="search" method="get">
                         <input name="search" class="form-control me-2" type="search" placeholder="Search"
                                aria-label="Search">

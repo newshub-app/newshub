@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% load django_bootstrap5 %}
+
+{% block title %}Newsletters{% endblock %}
+
+{% block content %}
+    <ul>
+	{% for newsletter in object_list %}
+		<li>{{ newsletter.date_sent }}</li>
+	{% endfor %}
+	</ul>
+{% endblock %}

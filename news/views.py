@@ -1,7 +1,7 @@
 from django import urls
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseNotAllowed
-from django.views.generic import TemplateView, CreateView, UpdateView
+from django.views.generic import TemplateView, CreateView, UpdateView, ListView
 from django_filters.views import FilterView
 
 from .filters import LinkFilter
@@ -47,3 +47,11 @@ class LinkUpdateView(OwnerRequiredUpdateView):
     fields = ["url", "title", "description", "category"]
     template_name = "news/link_update.html"
     success_url = urls.reverse_lazy("news:links")
+
+
+class NewsletterListView(LoginRequiredMixin, ListView):
+    model = Newsletter
+    context_object_name = "newsletters"
+    template_name = "news/newsletter_list.html"
+    ordering = ["-date_sent"]
+    paginate_by = 5
