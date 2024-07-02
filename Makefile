@@ -11,13 +11,20 @@ DOCKER_IMAGE := $(DOCKER_IMAGE_NAME):$(DOCKER_IMAGE_TAG)
 PROD_COMPOSE_FILE := -f docker-compose.yml
 DEV_COMPOSE_FILE := $(PROD_COMPOSE_FILE) -f docker-compose.dev.yml
 
+all: image
+.PHONY: all
+
+help: ## Show this help
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+.PHONY: help
+
 #
 # Django
 #
 
-run: ## Run django development server
-	@$(MANAGE_PY) runserver
-.PHONY: run
+superuser: ## Create application admin
+	@$(MANAGE_PY) createsuperuser
+.PHONY: docker-create-superuser
 
 migrations: ## Generate database migrations
 	@$(MANAGE_PY) makemigrations $(APPS)
@@ -50,22 +57,14 @@ test: ## Run unit tests
 # Docker
 #
 
-docker-image: ## Build docker image
+image: ## Build docker image
 	@docker build -t $(DOCKER_IMAGE) --pull --load .
-.PHONY: docker-image
+.PHONY: image
 
-docker-run: docker-image ## Run docker compose stack
+run: image ## Run docker compose stack
 	@docker compose up
-.PHONY: docker-run
+.PHONY: run
 
-docker-run-dev: docker-image ## Run docker compose stack in dev mode
+run-dev: image ## Run docker compose stack in dev mode
 	@docker compose $(DEV_COMPOSE_FILE) up
-.PHONY: docker-run-dev
-
-docker-create-superuser: ## Create superuser in docker container
-	@docker compose exec -it app python manage.py createsuperuser
-.PHONY: docker-create-superuser
-
-help: ## Show this help
-	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
-.PHONY: help
+.PHONY: run-dev
