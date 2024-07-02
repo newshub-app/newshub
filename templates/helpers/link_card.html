@@ -1,0 +1,27 @@
+<div class="card">
+    <div class="card-header">
+        {% if link.created_by == user or user.is_staff %}
+            <a class="btn btn-outline-primary btn-sm"
+               role="button"
+               href="{% url 'news:link_update' pk=link.id %}"
+               title="edit"
+            >
+                <i class="bi bi-pencil-square"></i>
+            </a>
+        {% endif %}
+        <a class="link-dark link-underline-opacity-0 link-underline-opacity-100-hover"
+           href="{{ link.url }}"
+           title="{{ link.url }}"
+           target="_blank"
+        >
+            {{ link.title }} <i class="bi bi-box-arrow-up-right"></i>
+        </a>
+    </div>
+    <div class="card-body">
+        {{ link.description }}
+    </div>
+    <div class="card-footer">
+        <div class="badge rounded-pill text-bg-secondary">{{ link.category }}</div>
+        <div class="fw-light fst-italic small">Added {{ link.created }} by {{ link.created_by.get_full_name }}</div>
+    </div>
+</div>
