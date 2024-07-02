@@ -4,9 +4,34 @@
 {% block title %}Newsletters{% endblock %}
 
 {% block content %}
-    <ul>
-	{% for newsletter in object_list %}
-		<li>{{ newsletter.date_sent }}</li>
-	{% endfor %}
-	</ul>
+    <div class="accordion" id="newslettersAccordion">
+        {% for newsletter in newsletters %}
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button"
+                            type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#newsletter{{ newsletter.pk }}"
+                            aria-expanded="true"
+                            aria-controls="newsletter{{ newsletter.pk }}">
+                        {{ newsletter.date_sent }}
+                        {% for category in newsletter.get_links_categories %}
+                            <span class="badge rounded-pill text-bg-secondary">{{ category.name }}</span>
+                        {% endfor %}
+                    </button>
+                </h2>
+                <div class="accordion-collapse collapse"
+                     id="newsletter{{ newsletter.pk }}"
+                     data-bs-parent="#newslettersAccordion">
+                    <div class="accordion-body">
+                        {% for link in newsletter.link_set.all %}
+                            {% include "helpers/link_card.html" %}
+                            <br>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    {% include "helpers/pagination.html" %}
 {% endblock %}
