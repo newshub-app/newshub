@@ -12,8 +12,7 @@ from .models import Newsletter, Link
 @app.task
 def send_newsletter():
     print("Preparing newsletter")
-    users = User.objects.filter(~Q(email=""))
-    newsletter = Newsletter.objects.create()
+
     links = Link.objects.filter(newsletter__isnull=True)
     if links.count() == 0:
         print("No new links to add to the newsletter")
@@ -21,6 +20,7 @@ def send_newsletter():
     print(f"Adding {links.count()} links to the newsletter")
 
     print("Generating newsletter content")
+    users = User.objects.filter(~Q(email=""))
     recipients = users.values_list("email", flat=True)
     if len(recipients) == 0:
         print("No users to send newsletter to")
@@ -45,11 +45,11 @@ def send_newsletter():
     if messages_sent > 0:
         print(f"Newsletter sent successfully ({messages_sent})")
         with transaction.atomic():
+            newsletter = Newsletter.objects.create()
             links.update(newsletter=newsletter)
             newsletter.recipients.set(users)
             newsletter.save()
     else:
         print("Failed to send newsletter")
-        newsletter.delete()
         return False
     return True
