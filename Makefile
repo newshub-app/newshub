@@ -58,8 +58,11 @@ test: ## Run unit tests
 #
 
 image: ## Build docker image
-	@docker build -t $(DOCKER_IMAGE) --pull --load .
+	@docker build --target production -t $(DOCKER_IMAGE) --pull --load .
 .PHONY: image
+
+image-dev: ## Build docker development image
+	@docker build --target development -t $(DOCKER_IMAGE) --pull --load .
 
 run: image ## Run docker compose stack
 	@docker compose up

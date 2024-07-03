@@ -1,10 +1,11 @@
+ARG PYTHON_VERSION=3.12
+
 #
 # base image
 #
-FROM python:3.12-alpine AS build
-WORKDIR /app
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
+FROM python:${PYTHON_VERSION}-alpine AS build
+ENV PYTHONUNBUFFERED=1
+ENV PYTHONOPTIMIZE=1
 
 # install system dependencies
 RUN apk add --update --no-cache \
@@ -19,23 +20,39 @@ RUN pip install --no-cache-dir --upgrade \
     setuptools \
     wheel
 
-# build dependencies wheels
+# copy requirements files
 COPY pyproject.toml poetry.lock /tmp/
+
+# build development dependencies
 RUN poetry export \
-      --with dev \
+      --only dev \
       -C /tmp \
       -f requirements.txt \
-      --output /tmp/requirements.txt && \
+    | \
     pip wheel \
       --no-cache-dir \
       --no-deps \
-      --wheel-dir /usr/src/app/wheels \
-      -r /tmp/requirements.txt
+      --wheel-dir /dev-wheels \
+      -r /dev/stdin
+
+# build production dependencies
+RUN poetry export \
+      -C /tmp \
+      -f requirements.txt \
+    | \
+    pip wheel \
+      --no-cache-dir \
+      --no-deps \
+      --wheel-dir /wheels \
+      -r /dev/stdin
 
 #
-# final image
+# production image
 #
-FROM python:3.12-alpine
+FROM python:${PYTHON_VERSION}-alpine AS prod
+ENV PYTHONUNBUFFERED=1
+ENV PYTHONOPTIMIZE=1
+ENV PYTHONNODEBUGRANGES=1
 ENV APP_DIR="/home/app"
 WORKDIR $APP_DIR
 
@@ -51,11 +68,11 @@ RUN apk add --update --no-cache \
     postgresql-client
 
 # install dependencies
-COPY --from=build /usr/src/app/wheels /wheels
 RUN pip install --no-cache-dir --upgrade \
     pip \
     setuptools \
     wheel
+COPY --from=build /wheels /wheels
 RUN pip install --no-cache-dir /wheels/* && \
     rm -rf /wheels
 
@@ -71,7 +88,31 @@ USER app
 # start application
 ENTRYPOINT ["/home/app/docker-entrypoint.sh"]
 CMD [ \
-    "gunicorn", "newshub.asgi:application", \
+    "gunicorn", \
+    "newshub.asgi:application", \
     "-k", "uvicorn.workers.UvicornWorker", \
     "-b", "0.0.0.0:8000" \
 ]
+
+#
+# development image
+#
+FROM prod AS dev
+ENV PYTHONUNBUFFERED=1
+ENV PYTHONOPTIMIZE=0
+ENV PYTHONNODEBUGRANGES=0
+EXPOSE 8000
+
+# use root user temporarily
+USER root
+
+# install development dependencies
+COPY --from=build /dev-wheels /dev-wheels
+RUN pip install --no-cache-dir /dev-wheels/* && \
+    rm -rf /dev-wheels
+
+# switch back to final user
+USER app
+
+# start development server
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]

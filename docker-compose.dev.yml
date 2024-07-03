@@ -1,14 +1,15 @@
 services:
   app:
-    build: .
-    command: python manage.py runserver 0.0.0.0:8000
+    build:
+      target: dev
     volumes:
       - .:/home/app
     environment:
       NEWSHUB_DEBUG: yes
 
   celery:
-    build: .
+    build:
+      target: dev
     command: watchmedo auto-restart --directory=. --patterns='*.py' --recursive -- celery -A newshub worker --concurrency=1 -l INFO
     volumes:
       - .:/home/app
@@ -16,7 +17,8 @@ services:
       NEWSHUB_DEBUG: yes
 
   celery_beat:
-    build: .
+    build:
+      target: dev
     command: watchmedo auto-restart --directory=. --patterns='*.py' --recursive -- celery -A newshub beat -l INFO
     volumes:
       - .:/home/app
