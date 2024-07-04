@@ -52,7 +52,9 @@ class Command(BaseCommand):
                 )
                 users.append(user)
                 self.stdout.write(
-                    f"New user: username={user.username} password={password}"
+                    self.style.NOTICE(
+                        f"New user: username={user.username} password={password}"
+                    )
                 )
             self.stdout.write(self.style.SUCCESS(f"Generated {len(users)} users"))
 
@@ -65,7 +67,7 @@ class Command(BaseCommand):
                 cat = Category.objects.create(
                     name=fake.word(),
                 )
-                self.stdout.write(f"New category: {cat.name}")
+                self.stdout.write(self.style.NOTICE(f"New category: {cat.name}"))
                 categories.append(cat)
             self.stdout.write(
                 self.style.SUCCESS(f"Generated {len(categories)} categories")
@@ -84,7 +86,7 @@ class Command(BaseCommand):
                     category=random.choice(categories),
                     created_by=random.choice(users),
                 )
-                self.stdout.write(f"New link: {link.url}")
+                self.stdout.write(self.style.NOTICE(f"New link: {link.url}"))
                 links.append(link)
             self.stdout.write(self.style.SUCCESS(f"Generated {len(links)} links"))
 
