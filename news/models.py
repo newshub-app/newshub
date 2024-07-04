@@ -9,10 +9,11 @@ class Newsletter(models.Model):
     recipients = models.ManyToManyField(settings.AUTH_USER_MODEL)
 
     def get_links_categories(self):
-        categories = set()
-        for link in self.link_set.all():
-            categories.add(link.category.name)
-        return categories
+        return (
+            self.link_set.prefetch_related("category")
+            .values_list("category__name", flat=True)
+            .distinct()
+        )
 
 
 class Category(models.Model):

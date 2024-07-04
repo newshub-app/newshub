@@ -16,7 +16,7 @@
                             aria-controls="newsletter{{ newsletter.pk }}">
                         {{ newsletter.date_sent }}
                         {% for category in newsletter.get_links_categories %}
-                            <span class="badge rounded-pill text-bg-secondary">{{ category.name }}</span>
+                            <span class="badge rounded-pill text-bg-secondary">{{ category }}</span>
                         {% endfor %}
                     </button>
                 </h2>
