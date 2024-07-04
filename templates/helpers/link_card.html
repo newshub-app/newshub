@@ -1,5 +1,12 @@
 <div class="card">
     <div class="card-header">
+        <a class="link-dark link-underline-opacity-0 link-underline-opacity-100-hover"
+           href="{{ link.url }}"
+           title="{{ link.url }}"
+           target="_blank"
+        >
+            {{ link.title }} <i class="bi bi-box-arrow-up-right"></i>
+        </a>
         {% if link.created_by == user or user.is_staff %}
             <a class="btn btn-outline-primary btn-sm"
                role="button"
@@ -9,13 +16,6 @@
                 <i class="bi bi-pencil-square"></i>
             </a>
         {% endif %}
-        <a class="link-dark link-underline-opacity-0 link-underline-opacity-100-hover"
-           href="{{ link.url }}"
-           title="{{ link.url }}"
-           target="_blank"
-        >
-            {{ link.title }} <i class="bi bi-box-arrow-up-right"></i>
-        </a>
     </div>
     <div class="card-body">
         {{ link.description }}
