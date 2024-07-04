@@ -6,6 +6,7 @@ then
   /wait
   python manage.py migrate
   python manage.py loaddata categories
+  python manage.py tasksinit
 else
   /wait
 fi

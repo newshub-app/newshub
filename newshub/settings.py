@@ -215,6 +215,13 @@ CELERY_RESULT_BACKEND = "django-db"
 CELERY_CACHE_BACKEND = "django-cache"
 
 #
+# Scheduled tasks
+#
+
+NEWSLETTER_EVERY = 5
+NEWSLETTER_PERIOD = "minutes"
+
+#
 # CORS
 # https://github.com/adamchainz/django-cors-headers?tab=readme-ov-file#configuration
 
@@ -290,6 +297,7 @@ EMAIL_USE_TLS = True
 EMAIL_SUBJECT_PREFIX = "[NewsHub] "
 
 EMAIL_FROM = os.environ.get("NEWSHUB_EMAIL_FROM", EMAIL_HOST_USER)
+
 
 #
 # Django debugging and unit tests settings

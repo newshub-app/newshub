@@ -44,6 +44,11 @@ fakedata: ## Generate fake data
 
 fakelinks: ## Generate fake links
 	@$(MANAGE_PY) genfakedata --links --num-links 20
+.PHONY: fakelinks
+
+schedules: ## Initialize scheduled tasks
+	@$(MANAGE_PY) tasksinit
+.PHONY: schedules
 
 static: ## Collect static files
 	@$(MANAGE_PY) collectstatic --noinput
@@ -58,11 +63,11 @@ test: ## Run unit tests
 #
 
 image: ## Build docker image
-	@docker build --target production -t $(DOCKER_IMAGE) --pull --load .
+	@docker build --target prod -t $(DOCKER_IMAGE) --pull --load .
 .PHONY: image
 
 image-dev: ## Build docker development image
-	@docker build --target development -t $(DOCKER_IMAGE) --pull --load .
+	@docker build --target dev -t $(DOCKER_IMAGE) --pull --load .
 
 run: image ## Run docker compose stack
 	@docker compose up
