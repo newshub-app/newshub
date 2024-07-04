@@ -1,5 +1,3 @@
-<!-- TOC -->
-
 * [:newspaper: newshub](#newspaper-newshub)
 * [:sparkles: Features](#sparkles-features)
 * [:rocket: Setup](#rocket-setup)
@@ -8,8 +6,6 @@
     * [:keyboard: Development](#keyboard-development)
 * [:alarm_clock: Periodic tasks](#alarm_clock-periodic-tasks)
 * [:copyright: License](#copyright-license)
-
-<!-- TOC -->
 
 ---
 
