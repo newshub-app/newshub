@@ -12,8 +12,9 @@ services:
     env_file:
       - settings.env
     environment:
-        NEWSHUB_BOOTSTRAP: yes
-        WAIT_HOSTS: db:5432,redis:6379
+      NEWSHUB_BOOTSTRAP: yes
+      WAIT_HOSTS: db:5432,redis:6379
+      WAIT_TIMEOUT: 60
 
   celery:
     image: ghcr.io/newshub-app/newshub:latest
@@ -25,7 +26,8 @@ services:
     env_file:
       - settings.env
     environment:
-        WAIT_HOSTS: app:8000,db:5432,rabbitmq:5672,redis:6379
+      WAIT_HOSTS: app:8000,db:5432,rabbitmq:5672,redis:6379
+      WAIT_TIMEOUT: 60
 
   celery_beat:
     image: ghcr.io/newshub-app/newshub:latest
@@ -37,12 +39,15 @@ services:
     env_file:
       - settings.env
     environment:
-        WAIT_HOSTS: app:8000,db:5432,rabbitmq:5672
+      WAIT_HOSTS: app:8000,db:5432,rabbitmq:5672
+      WAIT_TIMEOUT: 60
 
   rabbitmq:
     image: rabbitmq:3-alpine
     networks:
       - backend
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
     environment:
       RABBITMQ_DEFAULT_USER: newshub
       RABBITMQ_DEFAULT_PASS: newshub
@@ -74,4 +79,5 @@ networks:
 volumes:
   static_files:
   db_data:
+  rabbitmq_data:
   redis_data:
