@@ -1,5 +1,6 @@
 services:
   app:
+    image: ghcr.io/newshub-app/newshub:latest-dev
     build:
       target: dev
     volumes:
@@ -8,6 +9,7 @@ services:
       NEWSHUB_DEBUG: yes
 
   celery:
+    image: ghcr.io/newshub-app/newshub:latest-dev
     build:
       target: dev
     command: watchmedo auto-restart --directory=. --patterns='*.py' --recursive -- celery -A newshub worker --concurrency=1 -l INFO
@@ -17,6 +19,7 @@ services:
       NEWSHUB_DEBUG: yes
 
   celery_beat:
+    image: ghcr.io/newshub-app/newshub:latest-dev
     build:
       target: dev
     command: watchmedo auto-restart --directory=. --patterns='*.py' --recursive -- celery -A newshub beat -l INFO

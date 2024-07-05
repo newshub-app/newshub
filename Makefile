@@ -67,7 +67,7 @@ image: ## Build docker image
 .PHONY: image
 
 image-dev: ## Build docker development image
-	@docker build --target dev -t $(DOCKER_IMAGE) --pull --load .
+	@docker build --target dev -t $(DOCKER_IMAGE)-dev --pull --load .
 
 run: image ## Run docker compose stack
 	@docker compose up
