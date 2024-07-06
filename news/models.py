@@ -8,12 +8,16 @@ class Newsletter(models.Model):
     date_sent = models.DateTimeField(auto_now_add=True)
     recipients = models.ManyToManyField(settings.AUTH_USER_MODEL)
 
-    def get_links_categories(self):
-        return (
-            self.link_set.prefetch_related("category")
-            .values_list("category__name", flat=True)
-            .distinct()
-        )
+    def get_links_data(self):
+        return self.link_set.values(
+            "title",
+            "url",
+            "description",
+            "category__name",
+            "created_by__first_name",
+            "created_by__last_name",
+            "created_by__username",
+        ).order_by("category__name")
 
 
 class Category(models.Model):
@@ -35,7 +39,7 @@ class Link(models.Model):
     updated = models.DateTimeField(auto_now=True)
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     newsletter = models.ForeignKey(
-        Newsletter, on_delete=models.CASCADE, null=True, blank=True
+        Newsletter, on_delete=models.SET_NULL, null=True, blank=True
     )
 
     def __str__(self):

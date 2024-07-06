@@ -1,6 +1,5 @@
 from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
-from django.db import transaction
 from django.db.models import Q
 from django.template.loader import render_to_string
 
@@ -14,23 +13,26 @@ def send_newsletter():
     print("Preparing newsletter")
 
     links = Link.objects.filter(newsletter__isnull=True)
-    if links.count() == 0:
+    total_links = links.count()
+    if total_links == 0:
         print("No new links to add to the newsletter")
         return True
-    print(f"Adding {links.count()} links to the newsletter")
+    print(f"Adding {total_links} links to the newsletter")
 
     print("Generating newsletter content")
-    users = User.objects.filter(~Q(email=""))
+    users = User.objects.filter(~Q(email=""))  # Exclude users without email
     recipients = users.values_list("email", flat=True)
     if len(recipients) == 0:
         print("No users to send newsletter to")
         return False
-    ctx = {
-        "links": links,
-        "archives_url": "#",
-    }
-    html_content = render_to_string("news/newsletter.html", context=ctx)
-    text_content = render_to_string("news/newsletter.txt.html", context=ctx)
+
+    newsletter = Newsletter.objects.create()
+    newsletter.recipients.set(users)
+    links.update(newsletter=newsletter)
+
+    ctx = {"newsletter": newsletter}
+    html_content = render_to_string("news/newsletter.html.tpl", context=ctx)
+    text_content = render_to_string("news/newsletter.txt.tpl", context=ctx)
 
     print(f"Sending newsletter to {len(recipients)} users: {', '.join(recipients)}")
     message = EmailMultiAlternatives(
@@ -44,12 +46,8 @@ def send_newsletter():
 
     if messages_sent > 0:
         print(f"Newsletter sent successfully ({messages_sent})")
-        with transaction.atomic():
-            newsletter = Newsletter.objects.create()
-            links.update(newsletter=newsletter)
-            newsletter.recipients.set(users)
-            newsletter.save()
     else:
         print("Failed to send newsletter")
+        newsletter.delete()
         return False
     return True

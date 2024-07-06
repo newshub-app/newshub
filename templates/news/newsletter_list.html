@@ -4,34 +4,55 @@
 {% block title %}Newsletters{% endblock %}
 
 {% block content %}
-    <div class="accordion" id="newslettersAccordion">
+    <div class="accordion" id="newsletters-accordion">
         {% for newsletter in newsletters %}
+            {% regroup newsletter.get_links_data by category__name as links_by_cat %}
             <div class="accordion-item">
                 <h2 class="accordion-header">
                     <button class="accordion-button"
                             type="button"
                             data-bs-toggle="collapse"
-                            data-bs-target="#newsletter{{ newsletter.pk }}"
-                            aria-expanded="true"
-                            aria-controls="newsletter{{ newsletter.pk }}">
-                        {{ newsletter.date_sent }}
-                        {% for category in newsletter.get_links_categories %}
-                            <span class="badge rounded-pill text-bg-secondary">{{ category }}</span>
+                            data-bs-target="#newsletter{{ forloop.counter }}"
+                            aria-expanded="false"
+                            aria-controls="newsletter{{ forloop.counter }}">
+                        Newsletter from {{ newsletter.date_sent|date:"F d, Y" }}
+                        {% for links in newsletter.links_by_cat|slice:":5" %}
+                            <span class="badge rounded-pill text-bg-secondary">{{ link.grouper }}</span>
                         {% endfor %}
                     </button>
                 </h2>
                 <div class="accordion-collapse collapse"
-                     id="newsletter{{ newsletter.pk }}"
-                     data-bs-parent="#newslettersAccordion">
+                     id="newsletter{{ forloop.counter }}"
+                     data-bs-parent="#newsletters-accordion">
                     <div class="accordion-body">
-                        {% for link in newsletter.link_set.all %}
-                            {% include "helpers/link_card.html" %}
-                            <br>
+                        {% for links in links_by_cat %}
+                            <h4>{{ links.grouper|title }}</h4>
+                            <ul>
+                                {% for link in links.list %}
+                                    <li>
+                                        <a class="link-dark link-underline-opacity-0 link-underline-opacity-100-hover"
+                                           href="{{ link.url }}"
+                                           title="{{ link.url }}"
+                                           target="_blank"
+                                        >
+                                            {{ link.title }} <i class="bi bi-box-arrow-up-right"></i>
+                                        </a>
+                                        <small>
+                                            {% with link.created_by__first_name|add:" "|add:link.created_by__last_name as creator_name %}
+                                                (Shared by {{ creator_name.strip|default:link.created_by__username }})
+                                            {% endwith %}
+                                        </small>
+                                        <br>
+                                        <p>{{ link.description }}</p>
+                                    </li>
+                                {% endfor %}
+                            </ul>
                         {% endfor %}
                     </div>
                 </div>
             </div>
         {% endfor %}
     </div>
+    <br>
     {% include "helpers/pagination.html" %}
 {% endblock %}
