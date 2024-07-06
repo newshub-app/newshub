@@ -54,4 +54,4 @@ class NewsletterListView(LoginRequiredMixin, ListView):
     context_object_name = "newsletters"
     template_name = "news/newsletter_list.html"
     ordering = ["-date_sent"]
-    paginate_by = 5
+    paginate_by = 10
