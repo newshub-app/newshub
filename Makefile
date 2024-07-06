@@ -76,3 +76,6 @@ run: image ## Run docker compose stack
 run-dev: image ## Run docker compose stack in dev mode
 	@docker compose $(DEV_COMPOSE_FILE) up
 .PHONY: run-dev
+
+docker-shell: ## Run Django shell inside the app container
+	@docker compose exec app python manage.py shell
