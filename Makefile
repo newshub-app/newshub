@@ -39,11 +39,11 @@ loaddata: ## Load database fixtures
 .PHONY: loaddata
 
 fakedata: ## Generate fake data
-	@$(MANAGE_PY) genfakedata --users --categories --links
+	@$(MANAGE_PY) genfakedata --users 5 --categories 10 --links 50
 .PHONY: fakedata
 
 fakelinks: ## Generate fake links
-	@$(MANAGE_PY) genfakedata --links --num-links 20
+	@$(MANAGE_PY) genfakedata --links 20
 .PHONY: fakelinks
 
 schedules: ## Initialize scheduled tasks
