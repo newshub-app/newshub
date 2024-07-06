@@ -6,6 +6,7 @@
 {% block content %}
     {% for link in object_list %}
         {% include "helpers/link_card.html" %}
+        <br>
     {% endfor %}
     {% include "helpers/pagination.html" %}
 {% endblock %}
