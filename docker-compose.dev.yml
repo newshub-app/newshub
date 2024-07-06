@@ -7,6 +7,8 @@ services:
       - .:/home/app
     environment:
       NEWSHUB_DEBUG: yes
+      NEWSHUB_NEWSLETTER_EVERY: 2
+      NEWSHUB_NEWSLETTER_PERIOD: minutes
 
   celery:
     image: ghcr.io/newshub-app/newshub:latest-dev

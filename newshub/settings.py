@@ -218,8 +218,9 @@ CELERY_CACHE_BACKEND = "django-cache"
 # Scheduled tasks
 #
 
-NEWSLETTER_EVERY = 5
-NEWSLETTER_PERIOD = "minutes"
+NEWSLETTER_EVERY = int(os.environ.get("NEWSHUB_NEWSLETTER_EVERY", "7"))
+
+NEWSLETTER_PERIOD = os.environ.get("NEWSHUB_NEWSLETTER_PERIOD", "days")
 
 #
 # CORS
@@ -308,6 +309,8 @@ if DEBUG and not TESTING:
     MIDDLEWARE = ["debug_toolbar.middleware.DebugToolbarMiddleware"] + MIDDLEWARE
     EMAIL_BACKEND = "mail_panel.backend.MailToolbarBackend"
     CORS_ALLOW_ALL_ORIGINS = True
+    NEWSLETTER_EVERY = 2
+    NEWSLETTER_PERIOD = "minutes"
 if TESTING:
     EMAIL_BACKEND = "django.core.mail.backends.locmem.EmailBackend"
     CORS_ALLOW_ALL_ORIGINS = True
