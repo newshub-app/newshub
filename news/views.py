@@ -24,7 +24,7 @@ class LinkListView(LoginRequiredMixin, FilterView):
     model = Link
     context_object_name = "links"
     template_name = "news/link_list.html"
-    ordering = ["-created"]
+    ordering = ["-date_created"]
     paginate_by = 5
     filterset_class = LinkFilter
 

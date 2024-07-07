@@ -48,14 +48,14 @@ class CategoryAdmin(ModelAdmin):
 
 @admin.register(Link)
 class LinkAdmin(ModelAdmin):
-    list_display = ["title", "category", "url", "created", "updated"]
+    list_display = ["title", "category", "url", "date_created", "date_updated"]
     search_fields = ["title", "category__name", "url", "description"]
     list_filter = [
         "category",
-        "created",
+        "date_created",
         "newsletter__date_sent",
     ]
-    date_hierarchy = "created"
+    date_hierarchy = "date_created"
 
 
 class UnfoldTaskSelectWidget(UnfoldAdminSelectWidget, TaskSelectWidget):
