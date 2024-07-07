@@ -3,6 +3,9 @@ services:
     image: ghcr.io/newshub-app/newshub:latest-dev
     build:
       target: dev
+      pull: true
+      cache_from:
+        - ghcr.io/newshub-app/newshub:latest
     volumes:
       - .:/home/app
     environment:
@@ -14,6 +17,9 @@ services:
     image: ghcr.io/newshub-app/newshub:latest-dev
     build:
       target: dev
+      pull: true
+      cache_from:
+        - ghcr.io/newshub-app/newshub:latest
     command: watchmedo auto-restart --directory=. --patterns='*.py' --recursive -- celery -A newshub worker --concurrency=1 -l INFO
     volumes:
       - .:/home/app
@@ -24,6 +30,9 @@ services:
     image: ghcr.io/newshub-app/newshub:latest-dev
     build:
       target: dev
+      pull: true
+      cache_from:
+        - ghcr.io/newshub-app/newshub:latest
     command: watchmedo auto-restart --directory=. --patterns='*.py' --recursive -- celery -A newshub beat -l INFO
     volumes:
       - .:/home/app

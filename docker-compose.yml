@@ -1,8 +1,6 @@
 services:
   app:
     image: ghcr.io/newshub-app/newshub:latest
-    build:
-      target: prod
     ports:
       - 127.0.0.1:8000:8000
     networks:
@@ -18,8 +16,6 @@ services:
 
   celery:
     image: ghcr.io/newshub-app/newshub:latest
-    build:
-      target: prod
     command: celery -A newshub worker -l INFO
     networks:
       - backend
@@ -31,8 +27,6 @@ services:
 
   celery_beat:
     image: ghcr.io/newshub-app/newshub:latest
-    build:
-      target: prod
     command: celery -A newshub beat -l INFO
     networks:
       - backend
