@@ -4,6 +4,7 @@
 {% block title %}Newsletters{% endblock %}
 
 {% block content %}
+    {# TODO: figure out why all accordions are highlighted when page loads #}
     <div class="accordion" id="newsletters-accordion">
         {% for newsletter in newsletters %}
             {% regroup newsletter.get_links_data by category__name as links_by_cat %}
