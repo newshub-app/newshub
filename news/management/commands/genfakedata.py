@@ -47,7 +47,7 @@ class Command(BaseCommand):
             while cat_name in known_cats:
                 cat_name = fake.word()
             cat = Category.objects.create(
-                name=fake.word(),
+                name=cat_name,
             )
             self.stdout.write(self.style.NOTICE(f"New category: {cat.name}"))
             categories.append(cat)
@@ -58,6 +58,9 @@ class Command(BaseCommand):
             url = fake.url()
             while url in known_urls:
                 url = fake.url()
+            title = fake.sentence(nb_words=10)
+            while len(title) > 100:
+                title = fake.sentence(nb_words=10)
             link = Link.objects.create(
                 url=url,
                 title=fake.sentence(nb_words=10),
