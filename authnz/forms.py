@@ -3,7 +3,7 @@ from django.contrib.auth.forms import (
     ReadOnlyPasswordHashField,
     UsernameField,
 )
-from django.forms import ModelForm, CharField
+from django.forms import ModelForm, EmailField, CharField
 from django.urls import reverse_lazy
 
 from .models import *
@@ -16,7 +16,7 @@ class SignUpForm(UserCreationForm):
 
 
 class UserForm(ModelForm):
-    api_key = CharField(label="API Key", required=False, disabled=True)
+    api_token = CharField(label="API token", required=False, disabled=True)
     password = ReadOnlyPasswordHashField(
         label="Password",
         help_text="To change your password, use <a href={reset_pw_link}>this form</a>.",
@@ -24,8 +24,15 @@ class UserForm(ModelForm):
 
     class Meta:
         model = User
-        fields = ["username", "first_name", "last_name", "email", "api_key", "password"]
-        field_classes = {"username": UsernameField}
+        fields = [
+            "username",
+            "first_name",
+            "last_name",
+            "email",
+            "api_token",
+            "password",
+        ]
+        field_classes = {"username": UsernameField, "email": EmailField}
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

@@ -56,15 +56,14 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "corsheaders",
-    # "rest_framework",
-    # "rest_framework_simplejwt",
+    "rest_framework",
     "django_celery_beat",
     "django_celery_results",
     "django_filters",
     "django_bootstrap5",
     "authnz.apps.AuthnzConfig",
     "news.apps.NewsConfig",
-    # "api.apps.ApiConfig",
+    "api.apps.ApiConfig",
 ]
 
 MIDDLEWARE = [
@@ -234,7 +233,7 @@ CORS_ALLOWED_ORIGINS = ["http://127.0.0.1:8000"]
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
-        "rest_framework_simplejwt.authentication.JWTAuthentication",
+        "authnz.authentication.TokenAuthentication",
         "rest_framework.authentication.SessionAuthentication",
     ],
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
