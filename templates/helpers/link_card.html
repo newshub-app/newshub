@@ -5,12 +5,10 @@
            title="{{ link.url }}"
            target="_blank"
         >
-            {{ link.title }} <i class="bi bi-box-arrow-up-right"></i>
+            <i class="bi bi-box-arrow-up-right"></i> {{ link.title }}
         </a>
         {% if link.created_by == user or user.is_staff %}
-            <a class="btn btn-outline-primary btn-sm"
-               role="button"
-               href="{% url 'news:link_update' pk=link.id %}"
+            <a href="{% url 'news:link_update' pk=link.id %}"
                title="edit"
             >
                 <i class="bi bi-pencil-square"></i>
