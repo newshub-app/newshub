@@ -16,13 +16,17 @@
                             aria-expanded="false"
                             aria-controls="newsletter{{ forloop.counter }}">
                         {{ newsletter.date_sent|date:"F d, Y" }}
-                        {% for links in links_by_cat|slice:":7" %}
+                        {% for links in links_by_cat|slice:":5" %}
                             &nbsp;
                             <span class="badge rounded-pill text-bg-secondary">{{ links.grouper }}: {{ links.list|length }}</span>
                         {% endfor %}
-                        {% if links_by_cat|length > 7 %}
+                        {% if links_by_cat|length > 5 %}
                             &nbsp;
-                            <span class="badge rounded-pill text-bg-secondary">&hellip;</span>
+                            <span class="badge rounded-pill text-bg-secondary"
+                                  title="{% for links in links_by_cat|slice:"5:" %}{{ links.grouper }}&#013;{% endfor %}"
+                            >
+                                &hellip; {{ links_by_cat|length|add:"-5" }} more
+                            </span>
                         {% endif %}
                     </button>
                 </h2>
@@ -40,7 +44,7 @@
                                            title="{{ link.url }}"
                                            target="_blank"
                                         >
-                                            {{ link.title }} <i class="bi bi-box-arrow-up-right"></i>
+                                            <i class="bi bi-box-arrow-up-right"></i> {{ link.title }}
                                         </a>
                                         <small>
                                             {% with link.created_by__first_name|add:" "|add:link.created_by__last_name as creator_name %}
