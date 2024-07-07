@@ -24,7 +24,7 @@
                         {% if links_by_cat|length > 5 %}
                             &nbsp;
                             <span class="badge rounded-pill text-bg-secondary"
-                                  title="{% for links in links_by_cat|slice:"5:" %}{{ links.grouper }}&#013;{% endfor %}"
+                                  title="{% for links in links_by_cat|slice:"5:" %}{{ links.grouper }}: {{ links.list|length }}&#013;{% endfor %}"
                             >
                                 &hellip; {{ links_by_cat|length|add:"-5" }} more
                             </span>
