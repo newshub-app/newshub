@@ -84,6 +84,11 @@
                             </li>
                         {% endif %}
                         <li>
+                            <a href="{% url "api:api-root" %}" class="dropdown-item">
+                                <i class="bi bi-code-slash"></i> API
+                            </a>
+                        </li>
+                        <li>
                             <a class="dropdown-item"
                                href="#"
                                onclick="document.getElementById('logoutForm').submit();"
