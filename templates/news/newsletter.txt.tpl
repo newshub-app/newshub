@@ -4,7 +4,7 @@
     ## {{ links.grouper|title }}
     {% for link in links.list %}
         {% with link.created_by__first_name|add:" "|add:link.created_by__last_name as creator_name %}
-            {{ forloop.counter }} {{ link.title }}: {{ link.url }} (shared by {{ creator_name.strip|default:link.created_by__username }})
+            {{ forloop.counter }}. {{ link.title }}: {{ link.url }} (shared by {{ creator_name.strip|default:link.created_by__username }})
         {% endwith %}
         {{ link.description }}
     {% endfor %}
