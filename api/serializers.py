@@ -1,5 +1,6 @@
+from rest_framework.fields import HiddenField, CurrentUserDefault
 from rest_framework.relations import SlugRelatedField
-from rest_framework.serializers import HyperlinkedModelSerializer, ModelSerializer
+from rest_framework.serializers import ModelSerializer
 
 from news.models import *
 
@@ -13,8 +14,9 @@ class CategorySerializer(ModelSerializer):
         read_only_fields = ["id", "name"]
 
 
-class LinkSerializer(HyperlinkedModelSerializer):
+class LinkSerializer(ModelSerializer):
     category = SlugRelatedField(slug_field="name", queryset=Category.objects.all())
+    created_by = HiddenField(default=CurrentUserDefault())
 
     class Meta:
         model = Link
@@ -26,5 +28,6 @@ class LinkSerializer(HyperlinkedModelSerializer):
             "category",
             "date_created",
             "date_updated",
+            "created_by",
         ]
         read_only_fields = ["id", "date_created", "date_updated"]
