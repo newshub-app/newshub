@@ -30,4 +30,4 @@ class LinkSerializer(ModelSerializer):
             "date_updated",
             "created_by",
         ]
-        read_only_fields = ["id", "date_created", "date_updated"]
+        read_only_fields = ["id", "date_created", "date_updated", "created_by"]
