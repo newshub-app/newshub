@@ -16,12 +16,11 @@ among members via periodic newsletters.
 
 # :sparkles: Features
 
-* Links sharing
-* Periodic newsletters
+* Share interesting links with friends and teammates
+* Send a periodic newsletter with a digest of the latest links
+* API for programmatic access
+* Browser extension to add links directly from the browser
 * TODO: RSS feed reader
-* TODO (in-progress): API for programmatic access
-* TODO: Chrome extension
-* TODO: Firefox extension
 * TODO: AI-based links descriptions generation
 * TODO: AI-based newsletter summary generation
 
