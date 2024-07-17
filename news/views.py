@@ -1,7 +1,7 @@
 from django import urls
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseNotAllowed
-from django.views.generic import TemplateView, CreateView, UpdateView, ListView
+from django.views.generic import CreateView, UpdateView, ListView
 from django_filters.views import FilterView
 
 from .filters import LinkFilter
@@ -14,10 +14,6 @@ class OwnerRequiredUpdateView(LoginRequiredMixin, UpdateView):
         if obj.created_by != request.user and not request.user.is_staff:
             return self.handle_no_permission()
         return super().dispatch(request, *args, **kwargs)
-
-
-class IndexView(LoginRequiredMixin, TemplateView):
-    template_name = "news/index.html"
 
 
 class LinkListView(LoginRequiredMixin, FilterView):
