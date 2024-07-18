@@ -4,8 +4,8 @@ from rest_framework.routers import DefaultRouter
 from . import views
 
 router = DefaultRouter()
-router.register("category", views.CategoryViewSet)
-router.register("link", views.LinkViewSet)
+router.register("categories", views.CategoryViewSet)
+router.register("links", views.LinkViewSet)
 
 app_name = "api"
 urlpatterns = [
