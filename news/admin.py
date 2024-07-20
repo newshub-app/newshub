@@ -42,8 +42,12 @@ class NewsletterAdmin(ModelAdmin):
 
 @admin.register(Category)
 class CategoryAdmin(ModelAdmin):
-    list_display = ["name"]
-    search_fields = ["name"]
+    list_display = ["name", "subscribers_count"]
+    search_fields = ["name", "subscribers__username", "subscribers__email"]
+
+    @staticmethod
+    def subscribers_count(obj):
+        return obj.subscribers.count()
 
 
 @admin.register(Link)

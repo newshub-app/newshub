@@ -2,7 +2,7 @@ import hashlib
 from random import SystemRandom
 
 from django.contrib.auth.models import AbstractUser, Group as BaseGroup
-from django.db.models import CharField
+from django.db import models
 
 __all__ = ["User", "Group"]
 
@@ -14,7 +14,8 @@ def generate_api_token():
 
 
 class User(AbstractUser):
-    api_token = CharField(max_length=40, null=False, default=generate_api_token)
+    api_token = models.CharField(max_length=40, null=False, default=generate_api_token)
+    subscribe_new_categories = models.BooleanField(default=True)
 
     def get_full_name(self):
         full_name = f"{self.first_name} {self.last_name}".strip()

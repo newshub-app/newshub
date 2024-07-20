@@ -29,6 +29,7 @@ class UserForm(ModelForm):
             "first_name",
             "last_name",
             "email",
+            "subscribe_new_categories",
             "api_token",
             "password",
         ]
