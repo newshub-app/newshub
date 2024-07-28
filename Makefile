@@ -4,12 +4,15 @@ MANAGE_PY := $(PYTHON) manage.py
 APPS := authnz news
 FIXTURES := admin_user categories
 
+DOCKER_FILE := docker/Dockerfile
+DOCKER_OPTS := --pull --load -f $(DOCKER_FILE)
 DOCKER_IMAGE_NAME := ghcr.io/newshub-app/newshub
 DOCKER_IMAGE_TAG := latest
 DOCKER_IMAGE := $(DOCKER_IMAGE_NAME):$(DOCKER_IMAGE_TAG)
 
-PROD_COMPOSE_FILE := -f docker-compose.yml
-DEV_COMPOSE_FILE := $(PROD_COMPOSE_FILE) -f docker-compose.dev.yml
+COMPOSE_OPTS := --force-recreate --remove-orphans --build --pull always
+PROD_COMPOSE_FILE := -f docker/docker-compose.yml
+DEV_COMPOSE_FILE := $(PROD_COMPOSE_FILE) -f docker/docker-compose.dev.yml
 
 all: image
 .PHONY: all
@@ -63,19 +66,21 @@ test: ## Run unit tests
 #
 
 image: ## Build docker image
-	@docker build --target prod -t $(DOCKER_IMAGE) --pull --load .
+	@docker build --target prod -t $(DOCKER_IMAGE) $(DOCKER_OPTS) .
 .PHONY: image
 
 image-dev: ## Build docker development image
-	@docker build --target dev -t $(DOCKER_IMAGE)-dev --pull --load .
+	@docker build --target dev -t $(DOCKER_IMAGE)-dev $(DOCKER_OPTS) .
+.PHONY: image-dev
 
 run: image ## Run docker compose stack
-	@docker compose up
+	@docker compose $(PROD_COMPOSE_FILE) up $(COMPOSE_OPTS)
 .PHONY: run
 
 run-dev: image ## Run docker compose stack in dev mode
-	@docker compose $(DEV_COMPOSE_FILE) up
+	@docker compose $(DEV_COMPOSE_FILE) up $(COMPOSE_OPTS)
 .PHONY: run-dev
 
 docker-shell: ## Run Django shell inside the app container
 	@docker compose exec app python manage.py shell
+.PHONY: docker-shell
