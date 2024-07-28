@@ -1,18 +1,19 @@
 PYTHON := poetry run python
-MANAGE_PY := $(PYTHON) manage.py
+MANAGE_PY = $(PYTHON) manage.py
 
 APPS := authnz news
 FIXTURES := admin_user categories
 
+DOCKER_IMAGE := ghcr.io/newshub-app/newshub
 DOCKER_FILE := docker/Dockerfile
-DOCKER_OPTS := --pull --load -f $(DOCKER_FILE)
-DOCKER_IMAGE_NAME := ghcr.io/newshub-app/newshub
-DOCKER_IMAGE_TAG := latest
-DOCKER_IMAGE := $(DOCKER_IMAGE_NAME):$(DOCKER_IMAGE_TAG)
+DOCKER_BUILD_OPTS = --pull --load -f $(DOCKER_FILE) --cache-from $(DOCKER_IMAGE):latest
+DOCKER_BUILD = docker build $(DOCKER_BUILD_OPTS)
 
-COMPOSE_OPTS := --force-recreate --remove-orphans --build --pull always
-PROD_COMPOSE_FILE := -f docker/docker-compose.yml
-DEV_COMPOSE_FILE := $(PROD_COMPOSE_FILE) -f docker/docker-compose.dev.yml
+COMPOSE_OPTS = --force-recreate --remove-orphans --build --pull always
+PROD_COMPOSE_FILE := docker/docker-compose.yml
+DEV_COMPOSE_FILE := docker/docker-compose.dev.yml
+PROD_COMPOSE_UP = -f $(PROD_COMPOSE_FILE) up $(COMPOSE_OPTS)
+DEV_COMPOSE_UP = -f $(DEV_COMPOSE_FILE) $(PROD_COMPOSE_UP)
 
 all: image
 .PHONY: all
@@ -66,19 +67,19 @@ test: ## Run unit tests
 #
 
 image: ## Build docker image
-	@docker build --target prod -t $(DOCKER_IMAGE) $(DOCKER_OPTS) .
+	@$(DOCKER_BUILD) --target prod -t $(DOCKER_IMAGE):latest .
 .PHONY: image
 
 image-dev: ## Build docker development image
-	@docker build --target dev -t $(DOCKER_IMAGE)-dev $(DOCKER_OPTS) .
+	@$(DOCKER_BUILD) --target dev -t $(DOCKER_IMAGE):dev .
 .PHONY: image-dev
 
 run: image ## Run docker compose stack
-	@docker compose $(PROD_COMPOSE_FILE) up $(COMPOSE_OPTS)
+	@docker compose $(PROD_COMPOSE_UP)
 .PHONY: run
 
 run-dev: image ## Run docker compose stack in dev mode
-	@docker compose $(DEV_COMPOSE_FILE) up $(COMPOSE_OPTS)
+	@docker compose $(DEV_COMPOSE_UP)
 .PHONY: run-dev
 
 docker-shell: ## Run Django shell inside the app container
