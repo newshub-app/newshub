@@ -21,7 +21,7 @@ RUN pip install --no-cache-dir --upgrade \
     wheel
 
 # copy requirements files
-COPY pyproject.toml poetry.lock /tmp/
+COPY ../pyproject.toml poetry.lock /tmp/
 
 # build development dependencies
 RUN poetry export \
@@ -77,7 +77,7 @@ RUN pip install --no-cache-dir /wheels/* && \
     rm -rf /wheels
 
 # copy application code
-COPY . $APP_DIR
+COPY .. $APP_DIR
 
 # ensure all permissions are correct
 RUN chown -R app:app $APP_DIR
@@ -86,7 +86,7 @@ RUN chown -R app:app $APP_DIR
 USER app
 
 # start application
-ENTRYPOINT ["/home/app/docker-entrypoint.sh"]
+ENTRYPOINT ["/home/app/docker/entrypoint.sh"]
 CMD [ \
     "gunicorn", \
     "newshub.asgi:application", \
