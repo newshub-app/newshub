@@ -12,7 +12,6 @@ services:
     environment:
       NEWSHUB_BOOTSTRAP: yes
       WAIT_HOSTS: db:5432,redis:6379
-      WAIT_TIMEOUT: 60
 
   celery:
     image: ghcr.io/newshub-app/newshub:latest
@@ -23,7 +22,6 @@ services:
       - settings.env
     environment:
       WAIT_HOSTS: app:8000,db:5432,rabbitmq:5672,redis:6379
-      WAIT_TIMEOUT: 60
 
   celery_beat:
     image: ghcr.io/newshub-app/newshub:latest
@@ -34,7 +32,6 @@ services:
       - settings.env
     environment:
       WAIT_HOSTS: app:8000,db:5432,rabbitmq:5672
-      WAIT_TIMEOUT: 60
 
   rabbitmq:
     image: rabbitmq:3-alpine
