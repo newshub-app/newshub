@@ -15,7 +15,6 @@ def generate_api_token():
 
 class User(AbstractUser):
     api_token = models.CharField(max_length=40, null=False, default=generate_api_token)
-    subscribe_new_categories = models.BooleanField(default=True)
 
     def get_full_name(self):
         full_name = f"{self.first_name} {self.last_name}".strip()

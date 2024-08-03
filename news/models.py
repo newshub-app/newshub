@@ -1,12 +1,14 @@
-from django.conf import settings
+from django.contrib.auth import get_user_model
 from django.db import models
 
 __all__ = ["Newsletter", "Category", "Link"]
 
+User = get_user_model()
+
 
 class Newsletter(models.Model):
     date_sent = models.DateTimeField(auto_now_add=True)
-    recipients = models.ManyToManyField(settings.AUTH_USER_MODEL)
+    recipients = models.ManyToManyField(User)
 
     def get_links_data(self):
         return self.link_set.values(
@@ -22,7 +24,11 @@ class Newsletter(models.Model):
 
 class Category(models.Model):
     name = models.CharField(max_length=100, unique=True)
-    subscribers = models.ManyToManyField(settings.AUTH_USER_MODEL)
+    subscribers = models.ManyToManyField(
+        User,
+        related_name="subscribed_categories",
+        default=User.objects.all(),
+    )
 
     def __str__(self):
         return self.name
@@ -38,7 +44,7 @@ class Link(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
-    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE)
     newsletter = models.ForeignKey(
         Newsletter, on_delete=models.SET_NULL, null=True, blank=True
     )
