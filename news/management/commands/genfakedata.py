@@ -39,7 +39,7 @@ class Command(BaseCommand):
                     f"New user: username={user.username} password={password}"
                 )
             )
-        self.stdout.write(self.style.SUCCESS(f"Generated {len(users)} users"))
+        self.stdout.write(self.style.SUCCESS(f"Generated {options['users']} users"))
 
         for _ in range(options["categories"]):
             known_cats = Category.objects.values_list("name", flat=True)
@@ -51,7 +51,9 @@ class Command(BaseCommand):
             )
             self.stdout.write(self.style.NOTICE(f"New category: {cat.name}"))
             categories.append(cat)
-        self.stdout.write(self.style.SUCCESS(f"Generated {len(categories)} categories"))
+        self.stdout.write(
+            self.style.SUCCESS(f"Generated {options['categories']} categories")
+        )
 
         for _ in range(options["links"]):
             known_urls = Link.objects.values_list("url", flat=True)
@@ -63,7 +65,7 @@ class Command(BaseCommand):
                 title = fake.sentence(nb_words=10)
             link = Link.objects.create(
                 url=url,
-                title=fake.sentence(nb_words=10),
+                title=title,
                 description=fake.paragraph(nb_sentences=15),
                 category=random.choice(categories),
                 created_by=random.choice(users),
