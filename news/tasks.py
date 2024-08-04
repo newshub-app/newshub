@@ -37,7 +37,9 @@ def send_newsletter():
     ctx = {"newsletter": newsletter}
 
     messages_sent = 0
+    messages_total = 0
     for user in users:
+        messages_total += 1
         ctx["user"] = user
 
         try:
@@ -61,9 +63,9 @@ def send_newsletter():
             continue
 
     if messages_sent > 0:
-        print(f"Newsletter sent successfully ({messages_sent} messages sent)")
+        print(f"Newsletter sent successfully ({messages_sent}/{messages_total} sent)")
     else:
-        print(f"Newsletter sent successfully ({messages_sent} messages sent)")
+        print(f"Newsletter sent successfully ({messages_sent}/{messages_total} sent)")
         newsletter.delete()
         return False
     return True
