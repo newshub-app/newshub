@@ -66,22 +66,25 @@ test: ## Run unit tests
 # Docker
 #
 
-image: ## Build docker image
+images: image-prod image-dev ## Build docker images
+.PHONY: images
+
+image-prod: ## Build docker production image
 	@$(DOCKER_BUILD) --target prod -t $(DOCKER_IMAGE):latest .
-.PHONY: image
+.PHONY: image-prod
 
 image-dev: ## Build docker development image
 	@$(DOCKER_BUILD) --target dev -t $(DOCKER_IMAGE):dev .
 .PHONY: image-dev
 
-run: image ## Run docker compose stack
+run: image-prod ## Run docker compose stack
 	@docker compose $(PROD_COMPOSE_UP)
 .PHONY: run
 
-run-dev: image ## Run docker compose stack in dev mode
+run-dev: image-dev ## Run docker compose stack in dev mode
 	@docker compose $(DEV_COMPOSE_UP)
 .PHONY: run-dev
 
 docker-shell: ## Run Django shell inside the app container
-	@docker compose exec app python manage.py shell
+	@docker compose -p newshub exec app python manage.py shell
 .PHONY: docker-shell
