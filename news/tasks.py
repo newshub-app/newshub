@@ -1,6 +1,7 @@
 import re
 from itertools import groupby
 
+from celery.utils.log import get_task_logger
 from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
 from django.db.models import Q
@@ -12,23 +13,25 @@ from .models import Newsletter, Link
 
 RE_EMPTY_LINES = re.compile(r"(\n *){3,}", re.MULTILINE)
 
+logger = get_task_logger(__name__)
+
 
 @app.task
 def send_newsletter():
-    print("Preparing newsletter")
+    logger.info("Preparing newsletter")
 
     links = Link.objects.filter(newsletter__isnull=True)
     total_links = links.count()
     if total_links == 0:
-        print("No new links to add to the newsletter")
+        logger.warn("No new links to add to the newsletter")
         return True
-    print(f"Adding {total_links} links to the newsletter")
+    logger.debug(f"Adding {total_links} links to the newsletter")
 
-    print("Gathering newsletter recipients")
+    logger.debug("Gathering newsletter recipients")
     users = User.objects.filter(~Q(email=""))  # Exclude users without email
     recipients = users.values_list("email", flat=True)
     if len(recipients) == 0:
-        print("No users to send newsletter to")
+        logger.warn("No users to send newsletter to")
         return False
 
     newsletter = Newsletter.objects.create()
@@ -43,14 +46,14 @@ def send_newsletter():
         ctx["user"] = user
 
         try:
-            print(f"Generating newsletter content for {user.email}")
+            logger.info(f"Generating newsletter content for {user.email}")
             user_links = []
             links = newsletter.get_links_data()
             for category, links in groupby(links, key=lambda i: i["category__name"]):
                 if user.subscribed_categories.filter(name=category).exists():
                     user_links.append({"category": category, "links": list(links)})
             if not user_links:
-                print(f"No new links for {user.email}")
+                logger.info(f"No new links for {user.email}")
                 continue
             ctx["links"] = user_links
 
@@ -58,7 +61,7 @@ def send_newsletter():
             text_content = render_to_string("news/newsletter.txt.tpl", context=ctx)
             text_content = RE_EMPTY_LINES.sub(r"\n\n", text_content)
 
-            print(f"Sending newsletter to {user.email}")
+            logger.info(f"Sending newsletter to {user.email}")
             messages_total += 1
             message = EmailMultiAlternatives(
                 subject="NewsHub newsletter",
@@ -69,16 +72,18 @@ def send_newsletter():
             message.attach_alternative(html_content, "text/html")
             messages_sent += message.send(fail_silently=True)
         except Exception as e:
-            print(f"Failed to send newsletter to {user.email}: {e}")
+            logger.error(f"Failed to send newsletter to {user.email}: {e}")
             continue
 
     if messages_sent > 0:
         partial_send = " partially" if messages_sent < messages_total else ""
-        print(
-            f"Newsletter sent{partial_send} successfully ({messages_sent}/{messages_total} sent)"
-        )
+        log_msg = f"Newsletter #{newsletter.id} sent{partial_send} successfully ({messages_sent}/{messages_total} sent)"
+        if partial_send:
+            logger.warn(log_msg)
+            return False
+        logger.info(log_msg)
     else:
-        print("Failed to send newsletter")
+        logger.error(f"Failed to send newsletter #{newsletter.id}")
         newsletter.delete()
         return False
     return True
