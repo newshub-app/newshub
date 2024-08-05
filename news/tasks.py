@@ -1,4 +1,5 @@
 import re
+from itertools import groupby
 
 from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
@@ -39,17 +40,26 @@ def send_newsletter():
     messages_sent = 0
     messages_total = 0
     for user in users:
-        messages_total += 1
         ctx["user"] = user
 
         try:
             print(f"Generating newsletter content for {user.email}")
+            user_links = []
+            links = newsletter.get_links_data()
+            for category, links in groupby(links, key=lambda i: i["category__name"]):
+                if user.subscribed_categories.filter(name=category).exists():
+                    user_links.append({"category": category, "links": list(links)})
+            if not user_links:
+                print(f"No new links for {user.email}")
+                continue
+            ctx["links"] = user_links
+
             html_content = render_to_string("news/newsletter.html.tpl", context=ctx)
             text_content = render_to_string("news/newsletter.txt.tpl", context=ctx)
             text_content = RE_EMPTY_LINES.sub(r"\n\n", text_content)
 
-            # FIXME: build links list before rendering and only send email if there are links
             print(f"Sending newsletter to {user.email}")
+            messages_total += 1
             message = EmailMultiAlternatives(
                 subject="NewsHub newsletter",
                 body=text_content,
@@ -63,9 +73,12 @@ def send_newsletter():
             continue
 
     if messages_sent > 0:
-        print(f"Newsletter sent successfully ({messages_sent}/{messages_total} sent)")
+        partial_send = " partially" if messages_sent < messages_total else ""
+        print(
+            f"Newsletter sent{partial_send} successfully ({messages_sent}/{messages_total} sent)"
+        )
     else:
-        print(f"Newsletter sent successfully ({messages_sent}/{messages_total} sent)")
+        print("Failed to send newsletter")
         newsletter.delete()
         return False
     return True
