@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.db import models
 
-__all__ = ["Newsletter", "Category", "Link"]
+__all__ = ["Newsletter", "Category", "Link", "Feed", "FeedLink"]
 
 User = get_user_model()
 
@@ -22,6 +22,7 @@ class Newsletter(models.Model):
         ).order_by("category__name")
 
 
+# TODO: use signals to automatically subscribe users
 class Category(models.Model):
     name = models.CharField(max_length=100, unique=True)
     subscribers = models.ManyToManyField(
@@ -48,6 +49,38 @@ class Link(models.Model):
     newsletter = models.ForeignKey(
         Newsletter, on_delete=models.SET_NULL, null=True, blank=True
     )
+
+    def __str__(self):
+        return self.title
+
+
+class Feed(models.Model):
+    class FeedType(models.TextChoices):
+        RSS = "rss"
+
+    url = models.URLField(unique=True)
+    title = models.CharField(max_length=100, null=True, blank=True)
+    description = models.TextField(null=True, blank=True)
+    type = models.CharField(
+        max_length=50, choices=FeedType.choices, default=FeedType.RSS
+    )
+    date_created = models.DateTimeField(auto_now_add=True)
+    date_updated = models.DateTimeField(auto_now=True)
+    last_feed_update = models.DateTimeField(null=True, blank=True)
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.title
+
+
+class FeedLink(models.Model):
+    url = models.URLField(unique=True)
+    title = models.CharField(max_length=100)
+    description = models.TextField()
+    author = models.CharField(max_length=100)
+    date_published = models.DateTimeField()
+    selected = models.BooleanField(default=False)
+    feed = models.ForeignKey(Feed, on_delete=models.CASCADE, related_name="links")
 
     def __str__(self):
         return self.title

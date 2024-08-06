@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% load django_bootstrap5 %}
+
+{% block title %}Links{% endblock %}
+
+{% block content %}
+    <ul>
+    {% for feed in object_list %}
+        <li>{{ feed.url }}</li>
+    {% endfor %}
+    </ul>
+    {% include "helpers/pagination.html" %}
+{% endblock %}

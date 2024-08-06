@@ -1,5 +1,8 @@
-from .forms import LinkForm
+from .forms import LinkForm, FeedForm
 
 
-def new_link_form(_):
-    return {"new_link_form": LinkForm()}
+def modal_forms(_):
+    return {
+        "new_link_form": LinkForm(),
+        "new_feed_form": FeedForm(),
+    }

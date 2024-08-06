@@ -51,3 +51,24 @@ class NewsletterListView(LoginRequiredMixin, ListView):
     template_name = "news/newsletter_list.html"
     ordering = ["-date_sent"]
     paginate_by = 10
+
+
+class FeedListView(LoginRequiredMixin, ListView):
+    model = Feed
+    context_object_name = "feeds"
+    template_name = "news/feed_list.html"
+    ordering = ["-last_feed_update"]
+    paginate_by = 10
+
+
+class FeedCreateView(LoginRequiredMixin, CreateView):
+    model = Feed
+    fields = ["url", "title", "description", "type"]
+    success_url = urls.reverse_lazy("news:feeds")
+
+    def get(self, request, *args, **kwargs):
+        return HttpResponseNotAllowed(["POST"])
+
+    def form_valid(self, form):
+        form.instance.created_by = self.request.user
+        return super().form_valid(form)
