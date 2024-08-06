@@ -2,7 +2,7 @@
 
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
-        <a href="{% url 'news:links' %}" class="navbar-brand"><i class="bi bi-newspaper"></i> NewsHub</a>
+        <a href="{% url 'news:newsletters' %}" class="navbar-brand"><i class="bi bi-newspaper"></i> NewsHub</a>
         <button class="navbar-toggler"
                 type="button"
                 data-bs-toggle="collapse"
@@ -16,6 +16,12 @@
             <div class="collapse navbar-collapse" id="navbar-content">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
+                        <a href="{% url 'news:newsletters' %}"
+                           class="nav-link{% if request.resolver_match.view_name == 'news:newsletters' %} active{% endif %}"
+                        ><i class="bi bi-file-text"></i> Newsletters</a>
+                    </li>
+
+                    <li class="nav-item">
                         <a href="{% url 'news:links' %}"
                            class="nav-link{% if request.resolver_match.view_name == 'news:links' %} active{% endif %}"
                            {% if request.resolver_match.view_name == 'news:links' %}aria-current="page" {% endif %}
@@ -28,13 +34,7 @@
                            {% if request.resolver_match.view_name == 'news:feeds' %}aria-current="page"{% endif %}
                         ><i class="bi bi-rss"></i> Feeds</a>
 
-                    <li class="nav-item">
-                        <a href="{% url 'news:newsletters' %}"
-                           class="nav-link"
-                        ><i class="bi bi-file-text"></i> Newsletters</a>
-                    </li>
-
-                    {# TODO: allow to search feed links when on the feeds page #}
+                        {# TODO: allow to search feed links when on the feeds page #}
                     <li class="nav-item">
                         <form action="{% url 'news:links' %}" class="d-flex" role="search" method="get">
                             <input name="search" class="form-control me-2" type="search" placeholder="Search links"
