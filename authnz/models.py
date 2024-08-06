@@ -13,6 +13,8 @@ def generate_api_token():
     return hashlib.sha1(rand_bytes).hexdigest()
 
 
+# FIXME: find out why existing users can't be serialized during migrationss
+# TODO: use signals to automatically subscribe new users to all categories
 class User(AbstractUser):
     api_token = models.CharField(max_length=40, null=False, default=generate_api_token)
 
