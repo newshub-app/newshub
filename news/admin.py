@@ -62,6 +62,14 @@ class LinkAdmin(ModelAdmin):
     date_hierarchy = "date_created"
 
 
+@admin.register(Feed)
+class FeedAdmin(ModelAdmin):
+    list_display = ["title", "url", "description", "last_feed_update"]
+    search_fields = ["url", "title", "description"]
+    list_filter = ["last_feed_update"]
+    date_hierarchy = "last_feed_update"
+
+
 class UnfoldTaskSelectWidget(UnfoldAdminSelectWidget, TaskSelectWidget):
     pass
 
