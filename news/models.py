@@ -1,3 +1,4 @@
+import feedparser
 from django.contrib.auth import get_user_model
 from django.db import models
 
@@ -70,7 +71,24 @@ class Feed(models.Model):
     created_by = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.title
+        return self.title or self.url
+
+    def save(self, *args, **kwargs):
+        if not self.pk:
+            if None in (self.title, self.description):
+                if self.type == Feed.FeedType.RSS:
+                    data = feedparser.parse(self.url)
+                    if self.title is None:
+                        self.title = data.feed.get("title")
+                    if self.description is None:
+                        desc_field = None
+                        if data.feed.version.startswith("rss"):
+                            desc_field = "description"
+                        elif data.feed.version.startswith("atom"):
+                            desc_field = "subtitle"
+                        if desc_field is not None:
+                            self.description = data.feed.get(desc_field)
+        return super().save(*args, **kwargs)
 
 
 class FeedLink(models.Model):
@@ -83,4 +101,4 @@ class FeedLink(models.Model):
     feed = models.ForeignKey(Feed, on_delete=models.CASCADE, related_name="links")
 
     def __str__(self):
-        return self.title
+        return self.url
