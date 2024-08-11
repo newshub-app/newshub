@@ -64,7 +64,7 @@ class LinkAdmin(ModelAdmin):
 
 @admin.register(Feed)
 class FeedAdmin(ModelAdmin):
-    list_display = ["title", "url", "description", "last_feed_update"]
+    list_display = ["title", "description", "last_feed_update"]
     search_fields = ["url", "title", "description"]
     list_filter = ["last_feed_update"]
     date_hierarchy = "last_feed_update"
