@@ -15,7 +15,7 @@ DEV_COMPOSE_FILE := docker/docker-compose.dev.yml
 PROD_COMPOSE_UP = -f $(PROD_COMPOSE_FILE) up $(COMPOSE_OPTS)
 DEV_COMPOSE_UP = -f $(DEV_COMPOSE_FILE) $(PROD_COMPOSE_UP)
 
-all: image
+all: images
 .PHONY: all
 
 help: ## Show this help
