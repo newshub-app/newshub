@@ -1,6 +1,6 @@
 services:
   app:
-    image: ghcr.io/newshub-app/newshub:latest-dev
+    image: ghcr.io/newshub-app/newshub:dev
     build:
       context: ..
       dockerfile: docker/Dockerfile
@@ -16,7 +16,7 @@ services:
       NEWSHUB_NEWSLETTER_PERIOD: minutes
 
   celery:
-    image: ghcr.io/newshub-app/newshub:latest-dev
+    image: ghcr.io/newshub-app/newshub:dev
     build:
       context: ..
       dockerfile: docker/Dockerfile
