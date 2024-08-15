@@ -74,20 +74,19 @@ class Feed(models.Model):
         return self.title or self.url
 
     def save(self, *args, **kwargs):
-        if not self.pk:
-            if None in (self.title, self.description):
-                if self.type == Feed.FeedType.RSS:
-                    data = feedparser.parse(self.url)
-                    if self.title is None:
-                        self.title = data.feed.get("title")
-                    if self.description is None:
-                        desc_field = None
-                        if data.feed.version.startswith("rss"):
-                            desc_field = "description"
-                        elif data.feed.version.startswith("atom"):
-                            desc_field = "subtitle"
-                        if desc_field is not None:
-                            self.description = data.feed.get(desc_field)
+        if not self.pk and None in (self.title, self.description):
+            if self.type == Feed.FeedType.RSS:
+                data = feedparser.parse(self.url)
+                if not self.title:
+                    self.title = data.feed.get("title")
+                if not self.description:
+                    desc_field = None
+                    if data.version.startswith("rss"):
+                        desc_field = "description"
+                    elif data.version.startswith("atom"):
+                        desc_field = "subtitle"
+                    if desc_field is not None:
+                        self.description = data.feed.get(desc_field)
         return super().save(*args, **kwargs)
 
 
