@@ -61,7 +61,7 @@ class Command(BaseCommand):
             while url in known_urls:
                 url = fake.url()
             title = fake.sentence(nb_words=10)
-            while len(title) > 100:
+            while len(title) > 255:
                 title = fake.sentence(nb_words=10)
             link = Link.objects.create(
                 url=url,

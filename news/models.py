@@ -60,7 +60,7 @@ class Feed(models.Model):
         RSS = "rss"
 
     url = models.URLField(unique=True)
-    title = models.CharField(max_length=100, null=True, blank=True)
+    title = models.CharField(max_length=255, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
     type = models.CharField(
         max_length=50, choices=FeedType.choices, default=FeedType.RSS
@@ -92,11 +92,11 @@ class Feed(models.Model):
 
 class FeedLink(models.Model):
     url = models.URLField(unique=True)
-    title = models.CharField(max_length=100)
+    title = models.CharField(max_length=255)
     description = models.TextField()
     author = models.CharField(max_length=100)
     date_published = models.DateTimeField()
-    selected = models.BooleanField(default=False)
+    saved = models.BooleanField(default=False)
     feed = models.ForeignKey(Feed, on_delete=models.CASCADE, related_name="links")
 
     def __str__(self):
