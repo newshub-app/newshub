@@ -14,6 +14,8 @@ services:
       NEWSHUB_DEBUG: yes
       NEWSHUB_NEWSLETTER_EVERY: 2
       NEWSHUB_NEWSLETTER_PERIOD: minutes
+      NEWSHUB_FEEDS_UPDATE_EVERY: 2
+      NEWSHUB_FEEDS_UPDATE_PERIOD: minutes
 
   celery:
     image: ghcr.io/newshub-app/newshub:dev
@@ -31,7 +33,7 @@ services:
       NEWSHUB_DEBUG: yes
 
   celery_beat:
-    image: ghcr.io/newshub-app/newshub:latest-dev
+    image: ghcr.io/newshub-app/newshub:dev
     build:
       context: ..
       dockerfile: docker/Dockerfile
