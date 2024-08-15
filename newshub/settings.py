@@ -221,6 +221,10 @@ NEWSLETTER_EVERY = int(os.environ.get("NEWSHUB_NEWSLETTER_EVERY", "7"))
 
 NEWSLETTER_PERIOD = os.environ.get("NEWSHUB_NEWSLETTER_PERIOD", "days")
 
+FEEDS_UPDATE_EVERY = int(os.environ.get("NEWSHUB_FEEDS_UPDATE_EVERY", "3"))
+
+FEEDS_UPDATE_PERIOD = os.environ.get("NEWSHUB_FEEDS_UPDATE_PERIOD", "hours")
+
 #
 # CORS
 # https://github.com/adamchainz/django-cors-headers?tab=readme-ov-file#configuration
