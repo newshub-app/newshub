@@ -388,13 +388,13 @@ Django = ">=3.2,<6.0"
 
 [[package]]
 name = "django-unfold"
-version = "0.34.0"
+version = "0.35.0"
 description = "Modern Django admin theme for seamless interface development"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "django_unfold-0.34.0-py3-none-any.whl", hash = "sha256:c99aae6b6e0c1fe6200f9d4ba732bffb8463cee9ec199c00eeed95c2d6e92fb9"},
-    {file = "django_unfold-0.34.0.tar.gz", hash = "sha256:bdf9bddd7805407c52a4e18a2173467d4591287b7de07a98f93e484a6a0a7c4b"},
+    {file = "django_unfold-0.35.0-py3-none-any.whl", hash = "sha256:bf8abf82bb7ea8fa02d768f00e7abccee506e9789e31a4460a040393067f7c83"},
+    {file = "django_unfold-0.35.0.tar.gz", hash = "sha256:8eb393409be233509528ab3b9533de2b878270c72a5d750ee8d0713fdd9c421d"},
 ]
 
 [package.dependencies]
@@ -1166,4 +1166,4 @@ brotli = ["brotli"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "7be1098dcc41ea63f683a5828dbecbb857c3e42bfda8e8cd4b9390e3844b34eb"
+content-hash = "c09b7f797d033aa69dcef7a6e781649436cac7258ee617b5422d947f8a822ecf"
