@@ -8,12 +8,14 @@ from django.db.models import Q
 from django.template.loader import render_to_string
 
 from authnz.models import User
+from news.models import Newsletter, Link
 from newshub.celery import app
-from .models import Newsletter, Link
 
 RE_EMPTY_LINES = re.compile(r"(\n *){3,}", re.MULTILINE)
 
 logger = get_task_logger(__name__)
+
+__all__ = ["send_newsletter"]
 
 
 @app.task
@@ -82,8 +84,11 @@ def send_newsletter():
             logger.warn(log_msg)
             return False
         logger.info(log_msg)
+        return True
+    elif messages_total == 0:
+        logger.warn(f"Newsletter #{newsletter.id} was not sent to any user")
+        return True
     else:
         logger.error(f"Failed to send newsletter #{newsletter.id}")
         newsletter.delete()
         return False
-    return True
