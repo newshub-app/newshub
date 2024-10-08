@@ -17,7 +17,7 @@ gunicorn = "^23.0.0"
 uvicorn = { extras = ["standard"], version = "^0.31.0" }
 psycopg2 = "^2.9.9"
 whitenoise = "^6.7.0"
-django-unfold = "^0.39.0"
+django-unfold = "^0.40.0"
 celery = "^5.4.0"
 redis = "^5.1.1"
 django-celery-results = "^2.5.1"
