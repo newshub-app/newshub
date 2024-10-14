@@ -420,17 +420,18 @@ django = ">=4.2"
 
 [[package]]
 name = "faker"
-version = "27.4.0"
+version = "30.3.0"
 description = "Faker is a Python package that generates fake data for you."
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "Faker-27.4.0-py3-none-any.whl", hash = "sha256:1c44d4bdcad7237516c9a829b6a0bcb031c6a4cb0506207c480c79f74d8922bf"},
-    {file = "faker-27.4.0.tar.gz", hash = "sha256:4ce108fc96053bbba3abf848e3a2885f05faa938deb987f97e4420deaec541c4"},
+    {file = "Faker-30.3.0-py3-none-any.whl", hash = "sha256:e8a15fd1b0f72992b008f5ea94c70d3baa0cb51b0d5a0e899c17b1d1b23d2771"},
+    {file = "faker-30.3.0.tar.gz", hash = "sha256:8760fbb34564fbb2f394345eef24aec5b8f6506b6cfcefe8195ed66dd1032bdb"},
 ]
 
 [package.dependencies]
 python-dateutil = ">=2.4"
+typing-extensions = "*"
 
 [[package]]
 name = "feedparser"
@@ -825,6 +826,17 @@ dev = ["build", "hatch"]
 doc = ["sphinx"]
 
 [[package]]
+name = "typing-extensions"
+version = "4.12.2"
+description = "Backported and Experimental Type Hints for Python 3.8+"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "typing_extensions-4.12.2-py3-none-any.whl", hash = "sha256:04e5ca0351e0f3f85c6853954072df659d0d13fac324d0072316b67d7794700d"},
+    {file = "typing_extensions-4.12.2.tar.gz", hash = "sha256:1a7ead55c7e559dd4dee8856e3a88b41225abfe1ce8df57b7c13915fe121ffb8"},
+]
+
+[[package]]
 name = "tzdata"
 version = "2024.1"
 description = "Provider of IANA time zone data"
@@ -1173,4 +1185,4 @@ brotli = ["brotli"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "972e1d6385ef95006cd0530907c4222de80b560cb174f5c8e2ad2eaf3b9b98e6"
+content-hash = "867fa5c9680d1f3c8a805f3a03ed22fcec81331dd19b9947fd4e71acfc6e0a65"
