@@ -16,7 +16,7 @@ django-mail-panel = "^4.0.4"
 gunicorn = "^23.0.0"
 uvicorn = { extras = ["standard"], version = "^0.32.0" }
 psycopg2 = "^2.9.10"
-whitenoise = "^6.8.0"
+whitenoise = "^6.8.1"
 django-unfold = "^0.40.0"
 celery = "^5.4.0"
 redis = "^5.2.0"
