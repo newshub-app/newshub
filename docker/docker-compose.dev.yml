@@ -1,3 +1,5 @@
+name: newshub-dev
+
 services:
   app:
     image: ghcr.io/newshub-app/newshub:dev
