@@ -4,7 +4,7 @@ services:
   app:
     image: ghcr.io/newshub-app/newshub:latest
     ports:
-      - 127.0.0.1:8000:8000
+      - "127.0.0.1:8000:8000"
     networks:
       - backend
     volumes:
