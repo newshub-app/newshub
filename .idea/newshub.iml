@@ -17,7 +17,7 @@
       <excludeFolder url="file://$MODULE_DIR$/.idea/dataSources" />
       <excludeFolder url="file://$MODULE_DIR$/staticfiles" />
     </content>
-    <orderEntry type="jdk" jdkName="Poetry (newshub) (2)" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Poetry (newshub)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="bootstrap-icons" level="application" />
   </component>
